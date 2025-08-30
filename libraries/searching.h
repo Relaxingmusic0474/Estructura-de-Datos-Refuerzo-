@@ -7,6 +7,7 @@
 #include "stdbool.h"
 #include "limits.h"
 #include "data.h"
+#include "sorting.h"
 
 #define INDEX_NO_VALIDO (USHRT_MAX)
 

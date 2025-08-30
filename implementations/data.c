@@ -64,6 +64,7 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
 {
     Natural i, j;
     Natural tam = argc-1;
+    Tipo tipo = DESCONOCIDO;
     int entero = 0;
     double real = 0;
     bool es_real = true;
@@ -100,6 +101,7 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
     {
         datos->arreglo[i].elemento.tipo = DESCONOCIDO;
         datos->arreglo[i].elemento.valor = (Casilla) {0};
+        datos->arreglo[i].elemento.valor_double = DOUBLE_NO_VALIDO;
         datos->arreglo[i].posicion = i;
         datos->arreglo[i].encontrado = false;
 
@@ -122,6 +124,12 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
                     datos->arreglo[i].elemento.valor.natural = 0;
                 }
 
+                else if (strcmp(argv[i+1], "-0") == 0)
+                {
+                    datos->arreglo[i].elemento.tipo = ENTERO;
+                    datos->arreglo[i].elemento.valor.entero = 0;
+                }
+
                 else
                 {
                     datos->arreglo[i].elemento.tipo = CADENA;
@@ -142,6 +150,39 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
                     datos->arreglo[i].elemento.tipo = ENTERO;
                     datos->arreglo[i].elemento.valor.entero = entero;
                 }
+            }
+        }
+
+        if (es_numerico(datos->arreglo[i]))
+        {
+            tipo = datos->arreglo[i].elemento.tipo;
+
+            switch (tipo)
+            {
+                case ENTERO:
+                    datos->arreglo[i].elemento.valor_double = (double) datos->arreglo[i].elemento.valor.entero;
+                    break;
+
+                case NATURAL:
+                    datos->arreglo[i].elemento.valor_double = (double) datos->arreglo[i].elemento.valor.natural;
+                    break;
+
+                default:
+                    datos->arreglo[i].elemento.valor_double = datos->arreglo[i].elemento.valor.real;
+                    break;
+            }
+        }
+
+        else
+        {
+            if (datos->arreglo[i].elemento.tipo == CARACTER)
+            {
+                datos->arreglo[i].elemento.valor_double = (double) ((int) datos->arreglo[i].elemento.valor.caracter);
+            }
+
+            else  // CADENA o DESCONOCIDO
+            {
+                datos->arreglo[i].elemento.valor_double = DOUBLE_NO_VALIDO;
             }
         }
     }
@@ -244,4 +285,44 @@ bool validacion_datos_uniforme(Datos* datos)
     }
 
     return true;
+}
+
+Procedure imprimir_datos(Datos datos)
+{
+    Natural i;
+    Tipo tipo = DESCONOCIDO;
+
+    for (i=0; i<datos.tamanho; i++)
+    {
+        tipo = datos.arreglo[i].elemento.tipo;
+
+        switch (tipo)
+        {
+            case ENTERO:
+                printf("%i\t", datos.arreglo[i].elemento.valor.entero);
+                break;
+            
+            case NATURAL:
+                printf("%hu\t", datos.arreglo[i].elemento.valor.natural);
+                break;
+
+            case REAL:
+                printf("%.2f\t", datos.arreglo[i].elemento.valor.real);
+                break;
+
+            case CARACTER:
+                printf("%c\t", datos.arreglo[i].elemento.valor.caracter);
+                break;
+
+            case CADENA:
+                printf("%s\t", datos.arreglo[i].elemento.valor.cadena);
+                break;
+
+            default:
+                printf("ERROR: Dato no válido\t");
+                return;
+        }
+    }
+
+    printf("\n");
 }

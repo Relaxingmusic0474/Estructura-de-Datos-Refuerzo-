@@ -6,9 +6,11 @@
 #include "string.h"
 #include "stdbool.h"
 #include "limits.h"
+#include "float.h"
 #include "types.h"
 
 #define LARGO 20
+#define DOUBLE_NO_VALIDO (__DBL_MAX__)
 
 typedef union casilla Casilla;
 typedef enum tipo Tipo;
@@ -38,6 +40,7 @@ enum tipo
 struct elemento
 {
     Casilla valor;
+    double valor_double;
     Tipo tipo;
 };
 
@@ -61,5 +64,6 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos);  // Para leer datos
 bool es_numerico(Dato dato);  // Para detectar si un dato es un número.
 bool es_alpha(Dato dato);  // Para detectar si un dato es alfabético.
 bool validacion_datos_uniforme(Datos* datos);  // Para validar que los elementos del array sean del mismo tipo entre sí.
+Procedure imprimir_datos(Datos datos);
 
 #endif  // DATA_H
