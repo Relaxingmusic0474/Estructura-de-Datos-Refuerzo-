@@ -3,6 +3,7 @@
 int main(int argc, char* argv[])
 {
     Natural i;
+    char* nro = "-0";
     Datos data = {0};
 
     if (!leer_datos_input(argc, argv, &data))

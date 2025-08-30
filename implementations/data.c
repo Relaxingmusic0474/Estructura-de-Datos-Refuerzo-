@@ -2,8 +2,46 @@
 
 /**
  * @brief Función que detecta si una cadena es convertible a número decimal.
- * 
+ * @param str Cadena a verificar.
+ * @param len Longitud de la cadena a verificar.
+ * @return true si es posible leerlo como nro decimal, false en caso contrario.
  */
+bool es_decimal(char* str, size_t len)
+{
+    Natural i = 0;
+    Natural puntos = 0;
+
+    if (!str || len == 0) 
+    {
+        return false;
+    }
+    
+    // Permitir signo negativo al inicio
+    if (str[0] == '-') 
+    {
+        i++;
+    }
+
+    for (i=i; i<len; i++) 
+    {
+        if (str[i] == '.') 
+        {
+            puntos++;
+
+            if (puntos > 1) 
+            {
+                return false;  // Solo un punto permitido
+            } 
+        } 
+        
+        else if (!es_caracter_numerico(str[i])) 
+        {
+            return false;
+        }
+    }
+
+    return (puntos == 1 && len > 1);  // Debe tener exactamente un punto y al menos un dígito antes o después
+}
 
 /**
  * @brief Función que valida si un caracter es numérico o no.
@@ -68,86 +106,42 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
         entero = atoi(argv[i+1]);
         real = atof(argv[i+1]);
 
-        if (entero == 0)  // Dos posibilidades (es 0 o realmente no se puede convertir a entero)
+        if (es_decimal(argv[i+1], strlen(argv[i+1])))
         {
-            if (strcmp(argv[i+1], "0") == 0)  // Aquí significa que realmente es un Natural y es 0
-            {
-                datos->arreglo[i].elemento.tipo = NATURAL;
-                datos->arreglo[i].elemento.valor.natural = 0;
-            }
-
-            else
-            {
-                if (real == 0)  // Dos posibilidades (es 0 real o realmente no se puede convertir a real)
-                {
-                    subcadena_positiva = strstr(argv[i+1], "0.");
-                    subcadena_negativa = strstr(argv[i+1], "-0.");
-
-                    if ((subcadena_positiva && strcmp(subcadena_positiva, argv[i+1]) == 0) ||
-                        (subcadena_negativa && strcmp(subcadena_negativa, argv[i+1]) == 0))
-                    {
-                        subcadena = strchr(argv[i+1], '.');
-
-                        if (strcmp(subcadena, ".") == 0)
-                        {
-                            datos->arreglo[i].elemento.tipo = REAL;
-                            datos->arreglo[i].elemento.valor.real = (double) 0;
-                            continue;
-                        }
-
-                        else
-                        {
-                            if (strlen(subcadena) >= 2)
-                            {
-                                ptr = &subcadena[1];
-                            }
-                        }
-
-                        es_real = true;
-
-                        if (ptr)
-                        {
-                            while (es_real && *ptr)
-                            {
-                                if (!es_caracter_numerico(*ptr))
-                                {
-                                    es_real = false;
-                                    datos->arreglo[i].elemento.tipo = CADENA;
-                                    strncpy(datos->arreglo[i].elemento.valor.cadena, argv[i+1], LARGO-1);
-                                }
-
-                                ptr++;
-                            }
-                        }
-
-                        if (es_real)
-                        {
-                            datos->arreglo[i].elemento.tipo = REAL;
-                            datos->arreglo[i].elemento.valor.real = (double) 0;
-                        }
-                    }
-                }
-
-                else
-                {
-                    datos->arreglo[i].elemento.tipo = REAL;
-                    datos->arreglo[i].elemento.valor.real = real;
-                }
-            }
+            datos->arreglo[i].elemento.tipo = REAL;
+            datos->arreglo[i].elemento.valor.real = real;
         }
 
         else
         {
-            if (entero >= 0 && entero <= USHRT_MAX)
+            if (entero == 0)
             {
-                datos->arreglo[i].elemento.tipo = NATURAL;
-                datos->arreglo[i].elemento.valor.natural = (Natural) entero;
+                if (strcmp(argv[i+1], "0") == 0)
+                {
+                    datos->arreglo[i].elemento.tipo = NATURAL;
+                    datos->arreglo[i].elemento.valor.natural = 0;
+                }
+
+                else
+                {
+                    datos->arreglo[i].elemento.tipo = CADENA;
+                    strncpy(datos->arreglo[i].elemento.valor.cadena, argv[i+1], LARGO-1);
+                }
             }
 
             else
             {
-                datos->arreglo[i].elemento.tipo = ENTERO;
-                datos->arreglo[i].elemento.valor.entero = entero;
+                if (entero >= 0 && entero <= USHRT_MAX)
+                {
+                    datos->arreglo[i].elemento.tipo = NATURAL;
+                    datos->arreglo[i].elemento.valor.natural = (Natural) entero;
+                }   
+
+                else
+                {
+                    datos->arreglo[i].elemento.tipo = ENTERO;
+                    datos->arreglo[i].elemento.valor.entero = entero;
+                }
             }
         }
     }

@@ -55,7 +55,8 @@ struct datos
     bool ordenado;
 };
 
-bool es_caracter_numerico(char ch);
+bool es_decimal(char* str, size_t len);  // Para detectar si un nro es decimal
+bool es_caracter_numerico(char ch);  // Detecta si un caracter es numérico o no
 bool leer_datos_input(int argc, char* argv[], Datos* datos);  // Para leer datos que ingrese el usuario y ordenarlos por ejemplo.
 bool es_numerico(Dato dato);  // Para detectar si un dato es un número.
 bool es_alpha(Dato dato);  // Para detectar si un dato es alfabético.
