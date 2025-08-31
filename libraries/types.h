@@ -3,5 +3,6 @@
 
 typedef void Procedure;
 typedef unsigned short Natural;
+typedef Natural Index;
 
 #endif  // TYPES_H

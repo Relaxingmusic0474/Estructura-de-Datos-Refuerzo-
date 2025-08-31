@@ -11,7 +11,7 @@
 
 #define INDEX_NO_VALIDO (USHRT_MAX)
 
-Dato busqueda_secuencial(Datos* datos, Elemento valor);   // Función para buscar secuencialmente un dato
-Dato busqueda_binaria(Datos* datos, Elemento valor);    // Función para buscar binariamente un dato
+Index busqueda_secuencial(Datos* datos, Dato* dato_deseado);  // Función para buscar secuencialmente un dato
+Index busqueda_binaria(Datos* datos, Index start, Index end, Dato* dato_deseado, TipoOrdenamiento ordenamiento);  // Función para buscar binariamente un dato
 
 #endif  // SEARCHING_H

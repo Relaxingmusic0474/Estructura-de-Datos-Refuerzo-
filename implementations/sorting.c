@@ -56,7 +56,7 @@ Procedure merge(Datos* data_combinado, Datos* data1, Datos* data2, bool ascenden
     {
         while (i<data1->tamanho && j<data2->tamanho)
         {
-            if (strcmp(data1->arreglo[i].elemento.valor.cadena, data2->arreglo[i].elemento.valor.cadena) > 0)
+            if (strcmp(data1->arreglo[i].elemento.valor.cadena, data2->arreglo[j].elemento.valor.cadena) > 0)
             {
                 if (ascendente)
                 {
@@ -122,7 +122,6 @@ Procedure mergesort(Datos* datos, bool ascendente)
 
     n = datos->tamanho;
 
-    // Si los datos ya están ordenados, o el arreglo de datos tiene 1 solo elemento o no tiene, se va de la función
     if (n <= 1)
     {
         datos->ordenado = true;

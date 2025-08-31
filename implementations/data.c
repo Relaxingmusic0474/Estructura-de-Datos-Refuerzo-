@@ -54,6 +54,131 @@ bool es_caracter_numerico(char ch)
 }
 
 /**
+ * @brief Función que clasifica un dato según tipo.
+ * @param dato El dato que se quiere clasificar.
+ * @param str_representativo La cadena (string) que representa al dato (ej: "3.1416").
+ * @param posicion_inicial Posición inicial en la cual se desea inicializar el dato (normalmente respecto a un arreglo).
+ */
+Procedure clasificar_dato(Dato* dato, char* str_representativo, Index posicion_inicial)
+{
+    int entero;
+    double real;
+    Tipo tipo;
+
+    dato->elemento.tipo = DESCONOCIDO;
+    dato->elemento.valor = (Casilla) {0};
+    dato->elemento.valor_double = DOUBLE_NO_VALIDO;
+    dato->posicion = posicion_inicial;
+    dato->encontrado = false;
+
+    entero = atoi(str_representativo);
+    real = atof(str_representativo);
+
+    if (es_decimal(str_representativo, strlen(str_representativo)))
+    {
+        dato->elemento.tipo = REAL;
+        dato->elemento.valor.real = real;
+    }
+
+    else
+    {
+        if (entero == 0)
+        {
+            if (strcmp(str_representativo, "0") == 0)
+            {
+                dato->elemento.tipo = NATURAL;
+                dato->elemento.valor.natural = 0;
+            }
+
+            else if (strcmp(str_representativo, "-0") == 0)
+            {
+                dato->elemento.tipo = ENTERO;
+                dato->elemento.valor.entero = 0;
+            }
+
+            else
+            {
+                dato->elemento.tipo = CADENA;
+                strncpy(dato->elemento.valor.cadena, str_representativo, LARGO-1);
+            }
+        }
+
+        else
+        {
+            if (entero >= 0 && entero <= USHRT_MAX)
+            {
+                dato->elemento.tipo = NATURAL;
+                dato->elemento.valor.natural = (Natural) entero;
+            }   
+
+            else
+            {
+                dato->elemento.tipo = ENTERO;
+                dato->elemento.valor.entero = entero;
+            }
+        }
+    }
+
+    if (es_numerico(*dato))
+    {
+        tipo = dato->elemento.tipo;
+
+        switch (tipo)
+        {
+            case ENTERO:
+                dato->elemento.valor_double = (double) dato->elemento.valor.entero;
+                break;
+
+            case NATURAL:
+                dato->elemento.valor_double = (double) dato->elemento.valor.natural;
+                break;
+
+            default:
+                dato->elemento.valor_double = dato->elemento.valor.real;
+                break;
+        }
+    }
+
+    else
+    {
+        if (dato->elemento.tipo == CARACTER)
+        {
+            dato->elemento.valor_double = (double) ((int) dato->elemento.valor.caracter);
+        }
+
+        else  // CADENA o DESCONOCIDO
+        {
+            dato->elemento.valor_double = DOUBLE_NO_VALIDO;
+        }
+    }   
+}
+
+/**
+ * @brief Función que detecta si todas las entradas son caracteres.
+ * @param datos Los datos de entrada.
+ * @return true si todas las entradas son de longitud 1 (char), false en caso contrario.
+ */
+bool son_caracteres_las_entradas(Datos* datos)
+{
+    Natural i;
+
+    if (validacion_datos_uniforme(datos))
+    {
+        for (i=0; i<datos->tamanho; i++)
+        {
+            if (!(datos->arreglo[i].elemento.tipo == CADENA && strlen(datos->arreglo[i].elemento.valor.cadena) == 1))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * @brief Función para leer y crear los datos que ingresa el usuario en forma dinámica.
  * @param argc Cantidad de argumentos.
  * @param argv Arreglo de argumentos.
@@ -99,118 +224,17 @@ bool leer_datos_input(int argc, char* argv[], Datos* datos)
 
     for (i=0; i<tam; i++)
     {
-        datos->arreglo[i].elemento.tipo = DESCONOCIDO;
-        datos->arreglo[i].elemento.valor = (Casilla) {0};
-        datos->arreglo[i].elemento.valor_double = DOUBLE_NO_VALIDO;
-        datos->arreglo[i].posicion = i;
-        datos->arreglo[i].encontrado = false;
-
-        entero = atoi(argv[i+1]);
-        real = atof(argv[i+1]);
-
-        if (es_decimal(argv[i+1], strlen(argv[i+1])))
-        {
-            datos->arreglo[i].elemento.tipo = REAL;
-            datos->arreglo[i].elemento.valor.real = real;
-        }
-
-        else
-        {
-            if (entero == 0)
-            {
-                if (strcmp(argv[i+1], "0") == 0)
-                {
-                    datos->arreglo[i].elemento.tipo = NATURAL;
-                    datos->arreglo[i].elemento.valor.natural = 0;
-                }
-
-                else if (strcmp(argv[i+1], "-0") == 0)
-                {
-                    datos->arreglo[i].elemento.tipo = ENTERO;
-                    datos->arreglo[i].elemento.valor.entero = 0;
-                }
-
-                else
-                {
-                    datos->arreglo[i].elemento.tipo = CADENA;
-                    strncpy(datos->arreglo[i].elemento.valor.cadena, argv[i+1], LARGO-1);
-                }
-            }
-
-            else
-            {
-                if (entero >= 0 && entero <= USHRT_MAX)
-                {
-                    datos->arreglo[i].elemento.tipo = NATURAL;
-                    datos->arreglo[i].elemento.valor.natural = (Natural) entero;
-                }   
-
-                else
-                {
-                    datos->arreglo[i].elemento.tipo = ENTERO;
-                    datos->arreglo[i].elemento.valor.entero = entero;
-                }
-            }
-        }
-
-        if (es_numerico(datos->arreglo[i]))
-        {
-            tipo = datos->arreglo[i].elemento.tipo;
-
-            switch (tipo)
-            {
-                case ENTERO:
-                    datos->arreglo[i].elemento.valor_double = (double) datos->arreglo[i].elemento.valor.entero;
-                    break;
-
-                case NATURAL:
-                    datos->arreglo[i].elemento.valor_double = (double) datos->arreglo[i].elemento.valor.natural;
-                    break;
-
-                default:
-                    datos->arreglo[i].elemento.valor_double = datos->arreglo[i].elemento.valor.real;
-                    break;
-            }
-        }
-
-        else
-        {
-            if (datos->arreglo[i].elemento.tipo == CARACTER)
-            {
-                datos->arreglo[i].elemento.valor_double = (double) ((int) datos->arreglo[i].elemento.valor.caracter);
-            }
-
-            else  // CADENA o DESCONOCIDO
-            {
-                datos->arreglo[i].elemento.valor_double = DOUBLE_NO_VALIDO;
-            }
-        }
+        clasificar_dato(&datos->arreglo[i], argv[i+1], i);
     }
 
-    if (validacion_datos_uniforme(datos))
+    if (son_caracteres_las_entradas(datos))
     {
-        for (i=0; i<tam; i++)
+        for (j=0; j<tam; j++)
         {
-            if (es_alpha(datos->arreglo[i]))
-            {
-                if (strlen(datos->arreglo[i].elemento.valor.cadena) != 1)
-                {
-                    return true;
-                }
-
-                else
-                {
-                    if (i==tam-1)
-                    {
-                        for (j=0; j<tam; j++)
-                        {
-                            datos->arreglo[j].elemento.tipo = CARACTER;
-                            datos->arreglo[j].elemento.valor = (Casilla) {0};  // Se limpia
-                            datos->arreglo[j].elemento.valor.caracter = argv[j+1][0];
-                        }   
-                    }
-                }
-            }
+            datos->arreglo[j].elemento.tipo = CARACTER;
+            datos->arreglo[j].elemento.valor = (Casilla) {0};  // Se limpia
+            datos->arreglo[j].elemento.valor.caracter = argv[j+1][0];
+            datos->arreglo[j].elemento.valor_double = (double) ((int) (argv[j+1][0])); 
         }
     }
 
@@ -325,4 +349,44 @@ Procedure imprimir_datos(Datos datos)
     }
 
     printf("\n");
+}
+
+/**
+ * @brief Función que compara 2 metadatos.
+ * @param dato1 Dato 1 a comparar.
+ * @param dato2 Dato 2 a comparar.
+ * @return Un número positivo si dato1 > dato2, y uno negativo (o 0) en caso contrario.
+ */
+int comparar_metadatos(Dato* dato1, Dato* dato2)
+{
+    if (dato1->elemento.tipo == CADENA && dato2->elemento.tipo == CADENA)
+    {
+        return strcmp(dato1->elemento.valor.cadena, dato2->elemento.valor.cadena);
+    }
+
+    else
+    {
+        if ((es_numerico(*dato1) && es_numerico(*dato2)) || (dato1->elemento.tipo == CARACTER && dato2->elemento.tipo == CARACTER))
+        {
+            return (dato1->elemento.valor_double - dato2->elemento.valor_double);
+        }
+
+        else
+        {
+            return INT_MAX;  // Es como una forma de simular el error
+        }
+    }
+}
+
+/**
+ * @brief Función diseñada para encajar con qsort.
+ * @param a Primer elemento a comparar.
+ * @param b Segundo elemento a comparar.
+ * @return El resultado de la función comparar_metadatos.
+ */
+int comparar_qsort(const void* a, const void* b)
+{
+    Dato* dato1 = (Dato*) a;
+    Dato* dato2 = (Dato*) b;
+    return comparar_metadatos(dato1, dato2);
 }
