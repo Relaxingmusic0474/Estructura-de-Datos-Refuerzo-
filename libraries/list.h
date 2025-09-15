@@ -41,6 +41,8 @@ Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor);
 Procedure imprimir_lista(Lista lista);
 Natural tamanho_lista(Lista lista);
 Procedure eliminar_nodo(Lista* lista, Index posicion);
+Procedure eliminar_nodo_inicio(Lista* lista);
+Procedure eliminar_nodo_final(Lista* lista);
 Procedure eliminar_lista(Lista* lista, bool liberar);
 Procedure vaciar_lista(Lista* lista);
 bool esta_vacia(Lista lista);

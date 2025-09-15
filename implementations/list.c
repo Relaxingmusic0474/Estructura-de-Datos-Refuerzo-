@@ -249,6 +249,24 @@ Procedure eliminar_nodo(Lista* lista, Index posicion)
 }
 
 /**
+ * @brief Función que elimina el primer nodo de una lista enlazada simple.
+ * @param lista La lista a la cual se le quiere eliminar el primer nodo.
+ */
+Procedure eliminar_nodo_inicio(Lista* lista)
+{
+    eliminar_nodo(lista, 0);
+}
+
+/**
+ * @brief Función que elimina el último nodo de una lista enlazada simple.
+ * @param lista La lista a la cual se le quiere eliminar el último nodo.
+ */
+Procedure eliminar_nodo_final(Lista* lista)
+{
+    eliminar_nodo(lista, tamanho_lista(*lista)-1);
+}
+
+/**
  * @brief Función que elimina una lista, recorriendo nodo a nodo.
  * @param lista La lista que se quiere eliminar.
  * @param liberar Booleano que indica si se quiere eliminar completamente, liberando toda su memoria e incluso no pudiendo acceder más a ella, o si solo se quiere vaciar.

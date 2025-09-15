@@ -18,7 +18,11 @@ int main()
     }
 
     imprimir_lista(lista);
+    eliminar_nodo_final(&lista);
+    imprimir_lista(lista);
+    eliminar_nodo_inicio(&lista);
+    imprimir_lista(lista);
     eliminar_lista(&lista, true);
-    
+
     return 0;
 }
