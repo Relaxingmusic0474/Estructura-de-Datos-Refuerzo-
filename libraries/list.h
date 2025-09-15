@@ -41,6 +41,7 @@ bool insertar_nodo(Lista* lista, ElemType valor, Index posicion);
 bool insertar_nodo_inicio(Lista* lista, ElemType valor);
 bool insertar_nodo_final(Lista* lista, ElemType valor);
 Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor);
+Index buscar_valor_en_lista(Lista* lista, ElemType valor_buscado);
 Procedure imprimir_lista(Lista lista);
 Natural tamanho_lista(Lista lista);
 Procedure eliminar_nodo(Lista* lista, Index posicion);

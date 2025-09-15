@@ -181,6 +181,39 @@ Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor)
 }
 
 /**
+ * @brief Función que intenta encontrar un valor en una lista enlazada.
+ * @param lista La lista en la que se buscará el valor.
+ * @param valor_buscado El valor que se quiere buscar.
+ * @return La posición de la lista enlazada en la cual se encontró el valor (si no se encuentra, devuelve -1).
+ */
+Index buscar_valor_en_lista(Lista* lista, ElemType valor_buscado)
+{
+    Nodo* actual;
+    Index pos_actual = 0;
+
+    if (!lista || !lista->cabeza)
+    {
+        printf("La lista no existe o su cabeza (centinela) apunta a NULL.\n");
+        return -1;
+    }
+
+    actual = lista->cabeza->siguiente;
+
+    while (actual)
+    {
+        if (actual->dato == valor_buscado)
+        {
+            return pos_actual;
+        }
+
+        actual = actual->siguiente;
+        pos_actual++;
+    }
+
+    return -1;
+}
+
+/**
  * @brief Imprime los valores almacenados en los nodos de una lista enlazada.
  * @param lista La lista que se desea imprimir.
  */

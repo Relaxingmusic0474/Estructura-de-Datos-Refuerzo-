@@ -4,6 +4,7 @@ int main()
 {
     Lista lista = {0};
     Natural i;
+    ElemType dato_buscado = 55;
 
     if (!crear_lista(&lista, 15))
     {
@@ -26,6 +27,7 @@ int main()
     imprimir_lista(lista);
     invertir_lista(&lista);
     imprimir_lista(lista);
+    printf("El %d está en la posición %hu de la lista enlazada.\n", dato_buscado, buscar_valor_en_lista(&lista, dato_buscado));
     eliminar_lista(&lista, true);
 
     return 0;
