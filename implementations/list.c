@@ -61,6 +61,36 @@ bool crear_lista(Lista* lista, Natural nro_elementos)
     return true;
 }
 
+/**
+ * @brief Función que devuelve el nodo k-ésimo de una lista enlazada.
+ * @param lista La lista que se recorrerá.
+ * @param k La posición del nodo de la lista, del cual se quiere obtener información.
+ * @return El puntero al nodo de la posición k de la lista.
+ */
+Nodo* nodo_k_esimo(Lista lista, Index k)
+{
+    if (!(&lista) || !lista.cabeza)
+    {
+        return NULL;
+    }
+
+    Nodo* nodo = lista.cabeza->siguiente;
+    Index pos_actual = 0;
+
+    while (nodo)
+    {
+        if (pos_actual == k)
+        {
+            return nodo;
+        }
+
+        nodo = nodo->siguiente;
+        pos_actual++;
+    }
+
+    return NULL;
+}
+
 /** 
  * @brief Función que inserta un nodo en una cierta posición de la lista enlazada.
  * @param lista La lista en la cual se quiere insertar un elemento.

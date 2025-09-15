@@ -28,6 +28,7 @@ int main()
     invertir_lista(&lista);
     imprimir_lista(lista);
     printf("El %d está en la posición %hu de la lista enlazada.\n", dato_buscado, buscar_valor_en_lista(&lista, dato_buscado));
+    printf("El nodo en la posición 4 de la lista es %d.\n", nodo_k_esimo(lista, 4)->dato);  // El 5to nodo
     eliminar_lista(&lista, true);
 
     return 0;

@@ -37,6 +37,7 @@ struct listaDoble
 
 bool crear_lista_vacia(Lista* lista);
 bool crear_lista(Lista* lista, Natural nro_elementos);
+Nodo* nodo_k_esimo(Lista lista, Index k);
 bool insertar_nodo(Lista* lista, ElemType valor, Index posicion);
 bool insertar_nodo_inicio(Lista* lista, ElemType valor);
 bool insertar_nodo_final(Lista* lista, ElemType valor);
