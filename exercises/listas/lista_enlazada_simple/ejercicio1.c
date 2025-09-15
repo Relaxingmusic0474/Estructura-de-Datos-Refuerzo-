@@ -20,6 +20,10 @@ int main()
     imprimir_lista(lista);
     eliminar_nodo(&lista, 3);
     imprimir_lista(lista);
+    insertar_nodo_final(&lista, 15);
+    imprimir_lista(lista);
+    insertar_nodo_inicio(&lista, 10);
+    imprimir_lista(lista);
     eliminar_lista(&lista, true);
     return 0;
 }

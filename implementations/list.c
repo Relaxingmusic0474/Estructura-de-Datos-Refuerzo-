@@ -92,6 +92,28 @@ bool insertar_nodo(Lista* lista, ElemType valor, Index posicion)
 }
 
 /**
+ * @brief Función que inserta un nodo al inicio de una lista.
+ * @param lista La lista a la cual se le quiere insertar un elemento al inicio.
+ * @param valor Valor que tendrá el nodo que se inserte al inicio.
+ * @return El valor de la función insertar_nodo con el parámetro posicion=0.
+ */
+bool insertar_nodo_inicio(Lista* lista, ElemType valor)
+{
+    return insertar_nodo(lista, valor, 0);
+}
+
+/**
+ * @brief Función que inserta un nodo al final de una lista.
+ * @param lista La lista a la cual se le quiere insertar un elemento al final.
+ * @param valor Valor que tendrá el nodo que se inserte al final.
+ * @return El valor de la función insertar_nodo con el parámetro posicion=tamanho_lista(lista).
+ */
+bool insertar_nodo_final(Lista* lista, ElemType valor)
+{
+    return insertar_nodo(lista, valor, tamanho_lista(*lista));
+}
+
+/**
  * @brief Función que modifica el valor de un nodo de una lista enlazada.
  * @param lista La lista enlazada que se quiere modificar.
  * @param posicion La posición secuencial del nodo que se quiere modificar (0, 1, 2, ...).
@@ -145,6 +167,25 @@ Procedure imprimir_lista(Lista lista)
     }
 
     printf("NULL\n");
+}
+
+/** 
+ * @brief Función que devuelve el tamaño (nro de nodos de una lista).
+ * @param lista La lista de la cual se quiere saber su tamaño.
+ * @return El número de nodos que tiene la lista.
+ */
+Natural tamanho_lista(Lista lista)
+{
+    Nodo* actual = lista.cabeza->siguiente;
+    Natural tamanho = 0;
+
+    while (actual)
+    {
+        actual = actual->siguiente;
+        tamanho++;
+    }
+
+    return tamanho;
 }
 
 /**
