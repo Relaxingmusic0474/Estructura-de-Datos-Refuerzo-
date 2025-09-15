@@ -33,57 +33,6 @@ bool crear_lista_vacia(Lista* lista)
     return true;
 }
 
-/**
- * @brief Función que elimina una lista, recorriendo nodo a nodo.
- * @param lista La lista que se quiere eliminar.
- * @param liberar Booleano que indica si se quiere eliminar completamente, liberando toda su memoria e incluso no pudiendo acceder más a ella, o si solo se quiere vaciar.
- */
-Procedure eliminar_lista(Lista* lista, bool liberar)
-{
-    if (!lista)
-    {
-        return;
-    }
-
-    if (!lista->cabeza)
-    {
-        return;
-    }
-
-    Nodo* actual;
-    Nodo* sig;
-
-    if (liberar)  // Cuando se quiere eliminar completamente
-    {
-        actual = lista->cabeza;
-
-        while (actual)
-        {
-            sig = actual->siguiente;
-            free(actual);
-            lista->cabeza = sig;
-            actual = lista->cabeza;
-        }
-
-        lista->cabeza = NULL;
-    }
-
-    else  // Cuando se quiere dejar sin nodos pero no liberar completa, sino que dejarla como lista vacía solamente
-    {
-        actual = lista->cabeza->siguiente;
-
-        while (actual)
-        {
-            sig = actual->siguiente;
-            free(actual);
-            actual = sig;
-        }
-
-        lista->cabeza->dato = 0;
-        lista->cabeza->siguiente = NULL;
-    }
-}
-
 /** 
  * @brief Función que inserta un nodo en una cierta posición de la lista enlazada.
  * @param lista La lista en la cual se quiere insertar un elemento.
@@ -179,6 +128,70 @@ Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor)
     }
 
     actual->dato = valor;
+}
+
+Procedure imprimir_lista(Lista lista)
+{
+    Nodo* actual = lista.cabeza->siguiente;
+
+    while (actual)
+    {
+        printf("%d -> ", actual->dato);
+        actual = actual->siguiente;
+    }
+
+    printf("NULL\n");
+}
+
+/**
+ * @brief Función que elimina una lista, recorriendo nodo a nodo.
+ * @param lista La lista que se quiere eliminar.
+ * @param liberar Booleano que indica si se quiere eliminar completamente, liberando toda su memoria e incluso no pudiendo acceder más a ella, o si solo se quiere vaciar.
+ */
+Procedure eliminar_lista(Lista* lista, bool liberar)
+{
+    if (!lista)
+    {
+        return;
+    }
+
+    if (!lista->cabeza)
+    {
+        return;
+    }
+
+    Nodo* actual;
+    Nodo* sig;
+
+    if (liberar)  // Cuando se quiere eliminar completamente
+    {
+        actual = lista->cabeza;
+
+        while (actual)
+        {
+            sig = actual->siguiente;
+            free(actual);
+            lista->cabeza = sig;
+            actual = lista->cabeza;
+        }
+
+        lista->cabeza = NULL;
+    }
+
+    else  // Cuando se quiere dejar sin nodos pero no liberar completa, sino que dejarla como lista vacía solamente
+    {
+        actual = lista->cabeza->siguiente;
+
+        while (actual)
+        {
+            sig = actual->siguiente;
+            free(actual);
+            actual = sig;
+        }
+
+        lista->cabeza->dato = 0;
+        lista->cabeza->siguiente = NULL;
+    }
 }
 
 /**
