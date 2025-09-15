@@ -33,6 +33,34 @@ bool crear_lista_vacia(Lista* lista)
     return true;
 }
 
+/**
+ * @brief Función que crea una lista con cierto número de elementos (e inicializa en 0 todos sus nodos).
+ * @param nro_elementos Nro de elementos que tendrá la lista.
+ * @return true si se creó correctamente, false en caso contrario.
+ */
+bool crear_lista(Lista* lista, Natural nro_elementos)
+{
+    Natural i;
+
+    if (!crear_lista_vacia(lista))
+    {
+        printf("Error: No se pudo crear la lista.  Ni siquiera la vacía.\n");
+        return false;
+    }
+
+    for (i=0; i<nro_elementos; i++)
+    {
+        if (!insertar_nodo_inicio(lista, 0))
+        {
+            eliminar_lista(lista, false);  // Se eliminan los nodos, pero se deja el centinela en caso que haya un error al crear alguno de los nodos
+            printf("Error: No se pudo crear la lista completa.  Solo se pudo crear la lista vacía.\n");
+            return true;  // True, ya que el nodo centinela igual ocupa memoria.
+        }
+    }
+
+    return true;
+}
+
 /** 
  * @brief Función que inserta un nodo en una cierta posición de la lista enlazada.
  * @param lista La lista en la cual se quiere insertar un elemento.
