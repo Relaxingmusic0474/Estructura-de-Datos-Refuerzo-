@@ -335,3 +335,70 @@ bool esta_vacia(Lista lista)
 {
     return (lista.cabeza->siguiente == NULL);
 }
+
+/**
+ * @brief Función que intercambia los valores de 2 nodos en cierta posición de la lista enlazada.
+ * @param lista La lista.
+ * @param posicion1 La posición de uno de los nodos involucrados en el intercambio.
+ * @param posicion2 La posición del otro de los nodos involucrados en el intercambio.
+ */
+Procedure intercambiar_nodos(Lista* lista, Index posicion1, Index posicion2)
+{
+    Natural n = tamanho_lista(*lista);
+
+    if (posicion1 >= n || posicion2 >= n)
+    {
+        printf("Error: Alguno(s) de los nodos que se quiere intercambiar, no está(n) en la lista.\n");
+        return;
+    }
+
+    if (posicion1 == posicion2)
+    {
+        return;
+    }
+
+    Nodo* actual = lista->cabeza->siguiente;
+    Nodo* nodo1, *nodo2;
+    Index i = 0;
+    ElemType x, y;
+
+    while (i < min(posicion1, posicion2))
+    {
+        actual = actual->siguiente;
+        i++;
+    }
+
+    x = actual->dato;
+    nodo1 = actual;
+
+    while (i < max(posicion1, posicion2))
+    {
+        actual = actual->siguiente;
+        i++;
+    }
+
+    nodo2 = actual;
+    y = actual->dato;
+
+    nodo1->dato = y;
+    nodo2->dato = x;
+
+    return;
+}
+
+/**
+ * @brief Función que invierte una lista.
+ * @param lista Puntero a la lista que se quiere invertir.
+ */
+Procedure invertir_lista(Lista* lista)
+{
+    Natural i;
+    Natural n = tamanho_lista(*lista);
+
+    for (i=0; i<(n+1)/2; i++)
+    {
+        intercambiar_nodos(lista, i, (n-1)-i);
+    }
+
+    return;
+}

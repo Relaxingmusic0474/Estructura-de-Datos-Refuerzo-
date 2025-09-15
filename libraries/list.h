@@ -4,6 +4,9 @@
 #include "data.h"
 #include "types.h"
 
+#define min(x, y) ((x < y) ? x : y)
+#define max(x, y) ((x > y) ? x : y)
+
 typedef struct nodo Nodo;
 typedef struct nodoDoble NodoDoble;
 typedef struct lista Lista, ListaCircular;  // Para que sirva la misma estructura para lista y lista circular
@@ -46,6 +49,8 @@ Procedure eliminar_nodo_final(Lista* lista);
 Procedure eliminar_lista(Lista* lista, bool liberar);
 Procedure vaciar_lista(Lista* lista);
 bool esta_vacia(Lista lista);
+Procedure intercambiar_nodos(Lista* lista, Index posicion1, Index posicion2);
+Procedure invertir_lista(Lista* lista);
 
 bool crear_lista_doble(ListaDoble* lista);
 

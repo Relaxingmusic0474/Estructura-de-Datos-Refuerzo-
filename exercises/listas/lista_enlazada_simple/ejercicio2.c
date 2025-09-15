@@ -22,6 +22,10 @@ int main()
     imprimir_lista(lista);
     eliminar_nodo_inicio(&lista);
     imprimir_lista(lista);
+    intercambiar_nodos(&lista, 3, 6);
+    imprimir_lista(lista);
+    invertir_lista(&lista);
+    imprimir_lista(lista);
     eliminar_lista(&lista, true);
 
     return 0;
