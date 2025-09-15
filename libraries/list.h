@@ -1,0 +1,44 @@
+#ifndef LIST_H
+#define LIST_H
+
+#include "data.h"
+#include "types.h"
+
+typedef struct nodo Nodo;
+typedef struct nodoDoble NodoDoble;
+typedef struct lista Lista, ListaCircular;  // Para que sirva la misma estructura para lista y lista circular
+typedef struct listaDoble ListaDoble, ListaDobleCircular;  // Para que sirva la misma estructura para lista doble y lista doble circular
+
+struct nodo
+{
+    ElemType dato;
+    Nodo* siguiente;
+};
+
+struct lista
+{
+    Nodo* cabeza;
+};
+
+struct nodoDoble
+{
+    ElemType dato;
+    NodoDoble* siguiente;
+    NodoDoble* anterior;
+};
+
+struct listaDoble
+{
+    NodoDoble* cabeza;
+};
+
+bool crear_lista_vacia(Lista* lista);
+Procedure eliminar_lista(Lista* lista, bool liberar);
+bool insertar_nodo(Lista* lista, ElemType valor, Index posicion);
+Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor);
+Procedure vaciar_lista(Lista* lista);
+bool esta_vacia(Lista lista);
+
+bool crear_lista_doble(ListaDoble* lista);
+
+#endif  // LIST_H
