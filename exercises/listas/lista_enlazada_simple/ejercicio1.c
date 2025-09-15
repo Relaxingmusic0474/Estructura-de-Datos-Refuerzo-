@@ -14,6 +14,12 @@ int main()
     imprimir_lista(lista);
     modificar_nodo(&lista, 1, 28);
     imprimir_lista(lista);
+    insertar_nodo(&lista, 8, 2);
+    imprimir_lista(lista);
+    insertar_nodo(&lista, 5, 4);
+    imprimir_lista(lista);
+    eliminar_nodo(&lista, 3);
+    imprimir_lista(lista);
     eliminar_lista(&lista, true);
     return 0;
 }

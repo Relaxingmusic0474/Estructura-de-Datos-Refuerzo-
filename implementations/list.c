@@ -130,6 +130,10 @@ Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor)
     actual->dato = valor;
 }
 
+/**
+ * @brief Imprime los valores almacenados en los nodos de una lista enlazada.
+ * @param lista La lista que se desea imprimir.
+ */
 Procedure imprimir_lista(Lista lista)
 {
     Nodo* actual = lista.cabeza->siguiente;
@@ -141,6 +145,38 @@ Procedure imprimir_lista(Lista lista)
     }
 
     printf("NULL\n");
+}
+
+/**
+ * @brief Función que elimina un nodo de una lista enlazada.
+ * @param lista La lista enlazada de la cual se quiere eliminar un nodo.
+ * @param posicion La posición del nodo que se desea eliminar.
+ */
+Procedure eliminar_nodo(Lista* lista, Index posicion)
+{
+    Nodo* prev = lista->cabeza;
+    Nodo* actual = lista->cabeza->siguiente;
+    Index posicion_actual = 0;
+
+    while (posicion_actual < posicion)
+    {
+        if (actual)
+        {
+            prev = prev->siguiente;
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            printf("Error: No se pudo eliminar el nodo, ya que no existe un nodo en la posición %hu.\n", posicion);
+            return;
+        }
+
+        posicion_actual++;
+    }
+    
+    prev->siguiente = actual->siguiente;
+    free(actual);
 }
 
 /**

@@ -36,6 +36,7 @@ bool crear_lista_vacia(Lista* lista);
 bool insertar_nodo(Lista* lista, ElemType valor, Index posicion);
 Procedure modificar_nodo(Lista* lista, Index posicion, ElemType valor);
 Procedure imprimir_lista(Lista lista);
+Procedure eliminar_nodo(Lista* lista, Index posicion);
 Procedure eliminar_lista(Lista* lista, bool liberar);
 Procedure vaciar_lista(Lista* lista);
 bool esta_vacia(Lista lista);
