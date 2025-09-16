@@ -14,6 +14,12 @@ int main()
     imprimir_lista_doble(lista, true);
     insertar_nodo_doble(&lista, 18, 2);
     imprimir_lista_doble(lista, false);
+    modificar_nodo_doble(&lista, 4, 7);
+    imprimir_lista_doble(lista, false);
+    eliminar_nodo_doble(&lista, 3);
+    imprimir_lista_doble(lista, false);
+    eliminar_nodo_doble_inicio(&lista);
+    imprimir_lista_doble(lista, false);
     eliminar_lista_doble(&lista);
     return 0;
 }

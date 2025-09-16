@@ -608,9 +608,49 @@ bool insertar_nodo_doble_final(ListaDoble* lista, ElemType valor)
     return insertar_nodo_doble(lista, valor, tamanho_lista_doble(*lista));
 }
 
-Procedure modificar_nodo_doble(ListaDoble* lista, Index posicion, ElemType valor){}
+/**
+ * @brief Función que modifica el valor de un cierto nodo de una lista doble.
+ * @param lista La lista doble que se quiere modificar.
+ * @param posicion La posicion del nodo de la lista que se quiere modificar.
+ * @param valor El nuevo valor que tendrá el nodo que se modificará.
+ */
+Procedure modificar_nodo_doble(ListaDoble* lista, Index posicion, ElemType valor)
+{
+    if (!lista)
+    {
+        printf("Error: La lista no existe.\n");
+        return;
+    }
 
-Index buscar_valor_en_lista_doble(ListaDoble* lista, ElemType valor_buscado){}
+    NodoDoble* actual = lista->cabeza;
+    Index pos_actual = 0;
+
+    while (actual)
+    {
+        if (pos_actual < posicion)
+        {
+            actual = actual->siguiente;
+            pos_actual++;
+        }
+
+        else
+        {
+            if (pos_actual == posicion)
+            {
+                actual->dato = valor;
+                return;
+            }
+        }
+    }
+
+    printf("Error: No se pudo modificar el nodo porque la posición está fuera de rango.  La lista doble tiene solo %hu elementos.\n", pos_actual);
+    return;
+}
+
+Index buscar_valor_en_lista_doble(ListaDoble* lista, ElemType valor_buscado)
+{
+
+}
 
 /**
  * @brief Función que imprime cada uno de los valores presentes en los nodos de una lista doble.
@@ -655,6 +695,11 @@ Procedure imprimir_lista_doble(ListaDoble lista, bool invertida)
     }
 }
 
+/**
+ * @brief Función para saber el tamaño de una lista doble.
+ * @param lista La lista doble de la cual se quiere saber su tamaño.
+ * @return El tamaño (cantidad de nodos) de la lista doble.
+ */
 Natural tamanho_lista_doble(ListaDoble lista)
 {
     NodoDoble* actual = lista.cabeza;
@@ -669,11 +714,79 @@ Natural tamanho_lista_doble(ListaDoble lista)
     return tamanho;
 }
 
-Procedure eliminar_nodo_doble(ListaDoble* lista, Index posicion){}
+/**
+ * @brief Función que elimina un nodo de una lista doble.
+ * @param lista La lista doble a la cual se le quiere eliminar el nodo.
+ * @param posicion La posicion en que está el nodo que se quiere eliminar (0, 1, 2, ...).
+ */
+Procedure eliminar_nodo_doble(ListaDoble* lista, Index posicion)
+{
+    if (!lista || !lista->cabeza)
+    {
+        return;
+    }
 
-Procedure eliminar_nodo_doble_inicio(ListaDoble* lista){}
+    NodoDoble* actual = lista->cabeza;
+    NodoDoble* prev = NULL;
 
-Procedure eliminar_nodo_doble_final(ListaDoble* lista){}
+    Index pos_actual = 0;
+
+    while (actual)
+    {
+        if (pos_actual < posicion)
+        {
+            prev = actual;
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            if (pos_actual == posicion)
+            {
+                if (prev)
+                {
+                    prev->siguiente = actual->siguiente;
+                }
+
+                if (actual->siguiente)
+                {
+                    actual->siguiente->anterior = prev;
+
+                    if (posicion == 0)
+                    {
+                        lista->cabeza = actual->siguiente;
+                    }
+                }
+
+                free(actual);
+                return;
+            }
+        }    
+        
+        pos_actual++;
+    }
+
+    printf("Error: No se pudo eliminar el nodo doble, debido a que la posición está fuera de rango.  La lista tiene solo %hu elementos.\n", pos_actual);
+    return;
+}
+
+/**
+ * @brief Función que elimina el primer nodo de una lista doble.
+ * @param lista La lista doble a la cual se le quiere eliminar el primer nodo.
+ */
+Procedure eliminar_nodo_doble_inicio(ListaDoble* lista)
+{
+    eliminar_nodo_doble(lista, 0);
+}
+
+/**
+ * @brief Función que elimina el último nodo de una lista doble.
+ * @param lista La lista doble a la cual se le quiere eliminar el último nodo.
+ */
+Procedure eliminar_nodo_doble_final(ListaDoble* lista)
+{
+    eliminar_nodo_doble(lista, tamanho_lista_doble(*lista)-1);
+}
 
 /**
  * @brief Función que elimina una lista doble y libera toda su memoria asignada, recorriéndola nodo a nodo.
