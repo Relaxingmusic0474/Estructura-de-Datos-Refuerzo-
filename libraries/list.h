@@ -35,6 +35,7 @@ struct listaDoble
     NodoDoble* cabeza;
 };
 
+/* ------------ FUNCIONES PARA LISTAS ENLAZADAS SIMPLES ----------- */
 bool crear_lista_vacia(Lista* lista);
 bool crear_lista(Lista* lista, Natural nro_elementos);
 Nodo* nodo_k_esimo(Lista lista, Index k);
@@ -53,7 +54,25 @@ Procedure vaciar_lista(Lista* lista);
 bool esta_vacia(Lista lista);
 Procedure intercambiar_nodos(Lista* lista, Index posicion1, Index posicion2);
 Procedure invertir_lista(Lista* lista);
+/* --------------------------------------------------------------- */
 
-bool crear_lista_doble(ListaDoble* lista);
+
+/* ----------- FUNCIONES PARA LISTAS ENLAZADAS DOBLES ------------ */
+bool crear_lista_doble(ListaDoble* lista, Natural nro_elementos);
+Nodo* nodo_doble_k_esimo(ListaDoble lista, Index k);
+bool insertar_nodo_doble(ListaDoble* lista, ElemType valor, Index posicion);
+bool insertar_nodo_doble_inicio(ListaDoble* lista, ElemType valor);
+bool insertar_nodo_doble_final(ListaDoble* lista, ElemType valor);
+Procedure modificar_nodo_doble(ListaDoble* lista, Index posicion, ElemType valor);
+Index buscar_valor_en_lista_doble(ListaDoble* lista, ElemType valor_buscado);
+Procedure imprimir_lista_doble(ListaDoble lista, bool invertida);
+Natural tamanho_lista_doble(ListaDoble lista);
+Procedure eliminar_nodo_doble(ListaDoble* lista, Index posicion);
+Procedure eliminar_nodo_doble_inicio(ListaDoble* lista);
+Procedure eliminar_nodo_doble_final(ListaDoble* lista);
+Procedure eliminar_lista_doble(ListaDoble* lista);
+/* --------------------------------------------------------------- */
+
+
 
 #endif  // LIST_H

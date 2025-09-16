@@ -1,5 +1,7 @@
 #include "../libraries/list.h"
 
+/* -------------------------------------------------- LISTAS ENLAZADAS SIMPLES -------------------------------------------------- */
+
 /**
  * @brief Función que crea una lista vacía (con un único nodo y que apunta a NULL).
  * @param lista La lista que se quiere crear vacía.
@@ -465,3 +467,237 @@ Procedure invertir_lista(Lista* lista)
 
     return;
 }
+/* ------------------------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* -------------------------------------------------- LISTAS ENLAZADAS DOBLES -------------------------------------------------- */
+/**
+ * @brief Función que crea una lista doble de N elementos, e inicializa los valores de sus nodos en 0.
+ * @param lista La lista doble que se creará.
+ * @param nro_elementos El nro de elementos que tendrá.
+ * @return true si se crea correctamente, false en caso contrario.
+ */
+bool crear_lista_doble(ListaDoble* lista, Natural nro_elementos)
+{
+    Natural i;
+
+    for (i=0; i<nro_elementos; i++)
+    {
+        if (!insertar_nodo_doble_inicio(lista, 0))
+        {
+            eliminar_lista_doble(lista);
+            printf("Error: No se pudo crear la lista doble.\n");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+Nodo* nodo_doble_k_esimo(ListaDoble lista, Index k)
+{
+
+}
+
+/**
+ * @brief Función que inserta un nodo en una cierta posición de una lista doblemente enlazada.
+ * @param lista La lista doble en la que se desea insertar un nodo (el puntero a ella).
+ * @param valor El valor que contendrá el nodo que se insertará.
+ * @param posicion La posición de la lista en la cual se quiere insertar el nodo.
+ * @return true si el nodo se pudo insertar correctamente, false en caso contrario.
+ */
+bool insertar_nodo_doble(ListaDoble* lista, ElemType valor, Index posicion)
+{
+    if (!lista) 
+    {
+        printf("Error: Lista doble no existe.\n");
+        return false;
+    }
+
+    NodoDoble* nodo = calloc(1, sizeof(NodoDoble));  // Se crea el nodo
+
+    if (!nodo) 
+    {
+        printf("Error de asignación de memoria.\n");
+        return false;
+    }
+
+    nodo->dato = valor;  // Se le asigna el valor
+
+    // Caso lista vacía: solo aceptamos posicion == 0
+    if (!lista->cabeza) 
+    {
+        if (posicion != 0) 
+        {
+            printf("Error: Índice %hu fuera de rango (lista vacía).\n", posicion);
+            free(nodo);
+            return false;
+        }
+
+        lista->cabeza = nodo;  // nodo->siguiente y nodo->anterior ya están en NULL gracias a calloc
+        return true;
+    }
+
+    // Insertar al inicio
+    if (posicion == 0) 
+    {
+        nodo->siguiente = lista->cabeza;
+        nodo->anterior  = NULL;
+        lista->cabeza->anterior = nodo;
+        lista->cabeza = nodo;
+        return true;
+    }
+
+    // Recorrer hasta la posición (o hasta el final si es append)
+    NodoDoble* proximo  = lista->cabeza;
+    NodoDoble* anterior = NULL;
+    Index pos_actual = 0;
+
+    while (proximo && pos_actual < posicion)
+    {
+        anterior = proximo;
+        proximo  = proximo->siguiente;
+        pos_actual++;
+    }
+
+    // Si pos_actual != posicion, la posición pedida es mayor al tamaño de la lista  (ej: pediste 10 y la lista tiene 7; aquí proximo == NULL y pos_actual < posicion)
+    if (pos_actual != posicion) 
+    {
+        printf("Error: Índice %hu fuera de rango (tamaño actual %hu).\n", posicion, pos_actual);
+        free(nodo);
+        return false;
+    }
+
+    // En este punto:
+    // - si proximo != NULL, insertamos antes de 'proximo' (en medio)
+    // - si proximo == NULL, insertamos al final (append)
+    nodo->anterior  = anterior;
+    nodo->siguiente = proximo;
+    anterior->siguiente = nodo;
+
+    if (proximo)  // Inserción en medio
+    {              
+        proximo->anterior = nodo;
+    }                           
+    
+    // Si es al final, proximo == NULL y no tocamos nada más
+
+    return true;
+}
+
+/**
+ * @brief Función que inserta un nodo al inicio de una lista doble (dejándolo como 1er nodo).
+ * @param lista Lista doble en la cual se quiere insertar un nodo al inicio.
+ * @param valor Valor que contendrá el nodo.
+ * @return true si la inserción fue exitosa, false en caso contrario.
+ */
+bool insertar_nodo_doble_inicio(ListaDoble* lista, ElemType valor)
+{
+    return insertar_nodo_doble(lista, valor, 0);
+}
+
+/**
+ * @brief Función que inserta un nodo al final de una lista doble (dejándolo como último nodo).
+ * @param lista Lista doble en la cual se quiere insertar un nodo al final.
+ * @param valor Valor que contendrá el nodo.
+ * @return true si la inserción fue existosa, false en caso contrario.
+ */
+bool insertar_nodo_doble_final(ListaDoble* lista, ElemType valor)
+{
+    return insertar_nodo_doble(lista, valor, tamanho_lista_doble(*lista));
+}
+
+Procedure modificar_nodo_doble(ListaDoble* lista, Index posicion, ElemType valor){}
+
+Index buscar_valor_en_lista_doble(ListaDoble* lista, ElemType valor_buscado){}
+
+/**
+ * @brief Función que imprime cada uno de los valores presentes en los nodos de una lista doble.
+ * @param lista La lista a imprimir.
+ * @param invertida Booleano que indica si la lista se quiere imprimir invertida, o en su sentido normal.
+ */
+Procedure imprimir_lista_doble(ListaDoble lista, bool invertida)
+{
+    NodoDoble* actual = lista.cabeza;
+    NodoDoble* anterior = NULL;
+
+    printf("NULL ");
+
+    if (invertida)
+    {
+        while (actual)
+        {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+
+        actual = anterior;
+
+        while (actual)
+        {
+            printf("<-> %d ", actual->dato);
+            actual = actual->anterior;
+        }
+
+        printf("<-> NULL\n");
+    }
+
+    else
+    {
+        while (actual)
+        {
+            printf("<-> %d ", actual->dato);
+            actual = actual->siguiente;
+        }
+
+        printf("<-> NULL\n");
+    }
+}
+
+Natural tamanho_lista_doble(ListaDoble lista)
+{
+    NodoDoble* actual = lista.cabeza;
+    Natural tamanho = 0;
+
+    while (actual)
+    {
+        actual = actual->siguiente;
+        tamanho++;
+    }
+
+    return tamanho;
+}
+
+Procedure eliminar_nodo_doble(ListaDoble* lista, Index posicion){}
+
+Procedure eliminar_nodo_doble_inicio(ListaDoble* lista){}
+
+Procedure eliminar_nodo_doble_final(ListaDoble* lista){}
+
+/**
+ * @brief Función que elimina una lista doble y libera toda su memoria asignada, recorriéndola nodo a nodo.
+ * @param lista La lista doble que se quiere eliminar.
+ */
+Procedure eliminar_lista_doble(ListaDoble* lista)
+{
+    if (!lista)
+    {
+        printf("Error: Lista doble no existe.\n");
+        return;
+    }
+
+    NodoDoble* actual = lista->cabeza;
+    NodoDoble* sig;
+
+    while (actual)
+    {
+        sig = actual->siguiente;
+        free(actual);
+        actual = sig;
+    }
+
+    lista->cabeza = NULL;
+}
+/* ----------------------------------------------------------------------------------------------------------------------------- */
+
