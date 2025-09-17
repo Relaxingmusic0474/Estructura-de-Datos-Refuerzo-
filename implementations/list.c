@@ -878,3 +878,184 @@ Procedure eliminar_lista_doble(ListaDoble* lista)
 
 
 /* ------------------------------------------------ LISTAS ENLAZADAS CIRCULARES ------------------------------------------------ */
+/**
+ * @brief Función para crear una lista circular de N elementos.
+ * @param lista Puntero a la lista circular que se quiere crear.
+ * @param nro_elementos El nro de elementos (nodos) que tendrá la lista.
+ * @return true si se creó la lista circular correctamente, false en caso de error.
+ */
+bool crear_lista_circular(ListaCircular* lista, Natural nro_elementos)
+{
+    Natural i;
+
+    for (i=0; i<nro_elementos; i++)
+    {
+        if (i==0)  // El primer nodo se insertará al inicio, porque así debe ser.
+        {
+            if (!insertar_nodo_circular(lista, 0, 0))
+            {
+                printf("Error: No se pudo crear la lista circular.\n");
+                return false;
+            }
+        }
+
+        else
+        {
+            if (!insertar_nodo_circular(lista, 0, 1))  // Por eficiencia, los demás nodos se van a insertar por convención en el 2do nodo (posición 1).
+            {
+                // Aclaración: Si se hacía en la posición 0 (al inicio), se hubiese tenido que recorrer toda la lista, para enlazar el último con la nueva cabeza.
+                eliminar_lista_circular(lista);
+                printf("Error: No se pudo crear la lista circular.\n");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * @brief Función para insertar un nodo en una posición específica de una lista circular.
+ * @param lista La lista circular en la cual se quiere hacer la inserción.
+ * @param valor El valor que contendrá el nodo que se insertará en la lista circular.
+ * @param posicion La posición en la cual se insertará el nodo.
+ * @return true si la inserción fue exitosa, false en caso contrario.
+ */
+bool insertar_nodo_circular(ListaCircular* lista, ElemType valor, Index posicion)
+{
+    if (!lista)
+    {
+        printf("Error:  Lista circular no existe.\n");
+        return false;
+    }
+
+    NodoCircular* nodo = calloc(1, sizeof(NodoCircular));
+
+    if (!nodo)
+    {
+        printf("Error de asignación de memoria.\n");
+        return false;
+    }
+
+    nodo->dato = valor;
+
+    if (!lista->cabeza)  // Caso de que la cabeza sea NULL (lista circular no tiene elementos).
+    {
+        if (posicion != 0)
+        {
+            printf("Error: La lista circular está vacía.  Solo se pueden ingresar elementos en la posición 0.\n");
+            free(nodo);
+            nodo = NULL;
+            return false;
+        }
+
+        // Si la posición es 0
+        lista->cabeza = nodo;  // El nodo creado será la nueva cabeza.
+        nodo->siguiente = lista->cabeza; // Como la lista es circular, el puntero al siguiente, apuntará a sí mismo, ya que será el primer elemento.
+        return true;
+    }
+
+    NodoCircular* actual, *temp;
+
+    if (posicion == 0)  // Caso que hay cabeza válida, pero se quiere insertar al inicio (cambia la cabeza).
+    {
+        nodo->siguiente = lista->cabeza;
+        lista->cabeza = nodo;
+
+        actual = lista->cabeza;
+        temp = NULL;
+
+        do
+        {
+            temp = actual;
+            actual = actual->siguiente;
+        } 
+        while (actual != lista->cabeza);
+
+        temp->siguiente = lista->cabeza;  // Se actualiza el puntero siguiente del último nodo de la lista circular, con la nueva cabeza.
+        return true;
+    }
+
+    actual = lista->cabeza;
+    temp = NULL;
+
+    Index pos_actual = 0;
+
+    while (pos_actual == 0 || actual != lista->cabeza || (actual == lista->cabeza && temp == lista->cabeza))
+    {
+        if (pos_actual < posicion)
+        {
+            temp = actual;
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            if (pos_actual == posicion)
+            {
+                nodo->siguiente = actual;
+                temp->siguiente = nodo;
+                return true;
+            }
+        }
+
+        pos_actual++;
+    }
+
+    printf("Error: No se pudo insertar el elemento en la lista, porque la posición estaba fuera de rango.  La lista circular tiene solo %hu elementos.\n", pos_actual);
+    free(nodo);
+    nodo = NULL;
+    return false;
+}
+
+/**
+ * @brief Función para imprimir una lista circular.
+ * @param lista La lista circular que se quiere imprimir.
+ */
+Procedure imprimir_lista_circular(ListaCircular lista)
+{
+    NodoCircular* actual = lista.cabeza;
+
+    printf("Ciclo(");
+
+    while (1)
+    {
+        printf("%d -> ", actual->dato);
+        actual = actual->siguiente;
+
+        if (actual == lista.cabeza)
+        {
+            printf(")\n");
+            return;
+        }
+    }
+}
+
+/**
+ * @brief Función para eliminar una lista circular, liberando toda su memoria.
+ * @param lista La lista circular que se quiere eliminar.
+ */
+Procedure eliminar_lista_circular(ListaCircular* lista)
+{
+    if (!lista)
+    {
+        printf("Error: La lista circular no existe.\n");
+        return;
+    }
+
+    NodoCircular* actual = lista->cabeza;
+    NodoCircular* temp;
+
+    Index posicion = 0;
+
+    while (posicion == 0 || actual != lista->cabeza)
+    {
+        temp = actual->siguiente;
+        free(actual);
+        actual = temp;
+        posicion++;
+    }
+
+    lista->cabeza = NULL;
+}
+/* ----------------------------------------------------------------------------------------------------------------------------- */
