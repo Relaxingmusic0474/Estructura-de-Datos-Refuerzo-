@@ -3,6 +3,10 @@
 int main()
 {
     ListaDoble lista = {0};
+    Index posicion = 1;
+    ElemType buscado = 0;
+    bool encontrado;
+    char mensaje[50] = {'\0'};
     
     if (!crear_lista_doble(&lista, 5))
     {
@@ -20,6 +24,11 @@ int main()
     imprimir_lista_doble(lista, false);
     eliminar_nodo_doble_inicio(&lista);
     imprimir_lista_doble(lista, false);
+    printf("El nodo en la posición %hu de la lista es %d.\n", posicion, nodo_doble_k_esimo(lista, posicion)->dato);  // El 2do nodo
+    posicion = buscar_valor_en_lista_doble(&lista, buscado);
+    encontrado = (posicion != (Index) -1);
+    encontrado ? snprintf(mensaje, sizeof(mensaje), "Nro %d encontrado en la posición %hu.\n", buscado, posicion) : snprintf(mensaje, sizeof(mensaje), "El %d no fue encontrado.\n", buscado);
+    printf("%s", mensaje);
     eliminar_lista_doble(&lista);
     return 0;
 }

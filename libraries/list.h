@@ -59,7 +59,7 @@ Procedure invertir_lista(Lista* lista);
 
 /* ----------- FUNCIONES PARA LISTAS ENLAZADAS DOBLES ------------ */
 bool crear_lista_doble(ListaDoble* lista, Natural nro_elementos);
-Nodo* nodo_doble_k_esimo(ListaDoble lista, Index k);
+NodoDoble* nodo_doble_k_esimo(ListaDoble lista, Index k);
 bool insertar_nodo_doble(ListaDoble* lista, ElemType valor, Index posicion);
 bool insertar_nodo_doble_inicio(ListaDoble* lista, ElemType valor);
 bool insertar_nodo_doble_final(ListaDoble* lista, ElemType valor);

@@ -1,7 +1,6 @@
 #include "../libraries/list.h"
 
 /* -------------------------------------------------- LISTAS ENLAZADAS SIMPLES -------------------------------------------------- */
-
 /**
  * @brief Función que crea una lista vacía (con un único nodo y que apunta a NULL).
  * @param lista La lista que se quiere crear vacía.
@@ -495,9 +494,44 @@ bool crear_lista_doble(ListaDoble* lista, Natural nro_elementos)
     return true;
 }
 
-Nodo* nodo_doble_k_esimo(ListaDoble lista, Index k)
+/**
+ * @brief Función que devuelve el nodo en la posición k de una lista doble.
+ * @param lista La lista que se recorrerá en busca del nodo.
+ * @param k La posición de la lista de la cual se quiere obtener el nodo.
+ * @return El puntero al nodo en la posición k de la lista doble.
+ */
+NodoDoble* nodo_doble_k_esimo(ListaDoble lista, Index k)
 {
+    if (!(&lista))
+    {
+        printf("Error: La lista no existe.\n");
+        return NULL;
+    }
 
+    NodoDoble* actual = lista.cabeza;
+
+    Index pos_actual = 0;
+
+    while (actual)
+    {
+        if (pos_actual < k)
+        {
+            actual = actual->siguiente;    
+        }
+
+        else
+        {
+            if (pos_actual == k)
+            {
+                return actual;
+            }
+        }
+
+        pos_actual++;
+    }
+
+    printf("Error: Posición k fuera de índice, ya que la lista tiene solo %hu elementos.\n ", pos_actual);
+    return NULL;
 }
 
 /**
@@ -647,9 +681,36 @@ Procedure modificar_nodo_doble(ListaDoble* lista, Index posicion, ElemType valor
     return;
 }
 
+/**
+ * @brief Función que intenta encontrar un valor en una lista doblemente enlazada.
+ * @param lista La lista doble en la que se buscará el valor.
+ * @param valor_buscado El valor que se quiere buscar.
+ * @return La posición de la lista enlazada doble en la cual se encontró el valor (si no se encuentra, devuelve -1).
+ */
 Index buscar_valor_en_lista_doble(ListaDoble* lista, ElemType valor_buscado)
 {
+    if (!lista)
+    {
+        printf("Error: La lista no existe.\n");
+        return -1;
+    }
 
+    NodoDoble* actual = lista->cabeza;
+
+    Index posicion = 0;
+
+    while (actual)
+    {
+        if (actual->dato == valor_buscado)
+        {
+            return posicion;
+        }
+
+        actual = actual->siguiente;
+        posicion++;
+    }
+
+    return -1;
 }
 
 /**
@@ -814,3 +875,6 @@ Procedure eliminar_lista_doble(ListaDoble* lista)
 }
 /* ----------------------------------------------------------------------------------------------------------------------------- */
 
+
+
+/* ------------------------------------------------ LISTAS ENLAZADAS CIRCULARES ------------------------------------------------ */
