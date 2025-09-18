@@ -75,10 +75,16 @@ Procedure eliminar_lista_doble(ListaDoble* lista);
 
 
 /* --------- FUNCIONES PARA LISTAS ENLAZADAS CIRCULARES ---------- */
+bool crear_lista_circular_vacia(ListaCircular* lista);
 bool crear_lista_circular(ListaCircular* lista, Natural nro_elementos);
 bool insertar_nodo_circular(ListaCircular* lista, ElemType valor, Index posicion);
+bool insertar_nodo_circular_inicio(ListaCircular* lista, ElemType valor);
+bool insertar_nodo_circular_final(ListaCircular* lista, ElemType valor);
 Procedure imprimir_lista_circular(ListaCircular lista);
-Procedure eliminar_lista_circular(ListaCircular* lista);
+Natural tamanho_lista_circular(ListaCircular lista);
+Procedure eliminar_lista_circular(ListaCircular* lista, bool liberar);
+Procedure vaciar_lista_circular(ListaCircular* lista);
+bool es_circular_vacia(ListaCircular lista);
 /* --------------------------------------------------------------- */
 
 #endif  // LIST_H

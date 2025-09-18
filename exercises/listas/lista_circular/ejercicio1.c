@@ -12,6 +12,15 @@ int main()
     imprimir_lista_circular(lista);
     insertar_nodo_circular(&lista, 15, 2);
     imprimir_lista_circular(lista);
-    eliminar_lista_circular(&lista);
+    printf("El tamaño de la lista circular es %hu\n", tamanho_lista_circular(lista));
+    insertar_nodo_circular_final(&lista, 17);
+    imprimir_lista_circular(lista);
+    insertar_nodo_circular_inicio(&lista, 4);
+    imprimir_lista_circular(lista);
+    vaciar_lista_circular(&lista);
+    imprimir_lista_circular(lista);
+    insertar_nodo_circular(&lista, 12, 0);
+    imprimir_lista_circular(lista);
+    eliminar_lista_circular(&lista, true);
     return 0;
 }
