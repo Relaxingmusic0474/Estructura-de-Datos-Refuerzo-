@@ -1034,6 +1034,43 @@ bool insertar_nodo_circular_final(ListaCircular* lista, ElemType valor)
 }
 
 /**
+ * @brief Función que intenta encontrar un valor en una lista enlazada circular.
+ * @param lista La lista circular en la que se buscará el valor.
+ * @param valor_buscado El valor que se quiere buscar.
+ * @return La posición de la lista enlazada circular en la cual se encontró el valor (si no se encuentra, devuelve -1).
+ */
+Index buscar_valor_en_lista_circular(ListaCircular* lista, ElemType valor_buscado)
+{
+    if (!lista || !lista->cabeza)
+    {
+        printf("La lista circular no existe o su cabeza es NULL.\n");
+        return -1;
+    }
+
+    if (es_circular_vacia(*lista))
+    {
+        printf("La lista circular está vacía.\n");
+        return -1;
+    }
+
+    NodoCircular* actual = lista->cabeza->siguiente;
+    Index pos_actual = 0;
+
+    while (actual != lista->cabeza)
+    {
+        if (actual->dato == valor_buscado)
+        {
+            return pos_actual;
+        }
+
+        actual = actual->siguiente;
+        pos_actual++;
+    }
+
+    return -1;
+}
+
+/**
  * @brief Función para imprimir una lista circular.
  * @param lista La lista circular que se quiere imprimir.
  */
@@ -1245,5 +1282,78 @@ bool es_circular_vacia(ListaCircular lista)
     }
 
     return (lista.cabeza->siguiente == lista.cabeza);
+}
+
+/**
+ * @brief Función que implementa la rotación a la izquierda de una lista circular.
+ * @param lista La lista circular a la cual se le implementará una rotación a la izquierda.
+ */
+Procedure rotacion_izquierda_lista_circular(ListaCircular* lista)
+{
+    if (!lista || !lista->cabeza)
+    {
+        printf("Error: La lista circular no existe, o bien su nodo centinela no está implementado.\n");
+        return;
+    }
+
+    if (es_circular_vacia(*lista))  // Si está vacía no hace nada.
+    {
+        return;
+    }
+
+    if (lista->cabeza->siguiente->siguiente == lista->cabeza)  // Si tiene un solo elemento no hace nada.
+    {
+        return;
+    }
+
+    NodoCircular* primero = lista->cabeza->siguiente;
+
+    lista->cabeza->siguiente = lista->cabeza->siguiente->siguiente;
+    primero->siguiente = lista->cabeza;
+
+    NodoCircular* actual = lista->cabeza->siguiente;
+
+    while (actual->siguiente != lista->cabeza)
+    {
+        actual = actual->siguiente;
+    }
+
+    actual->siguiente = primero;
+}
+
+/**
+ * @brief Función que implementa la rotación a la derecha de una lista circular.
+ * @param lista La lista circular a la cual se le implementará una rotación a la derecha.
+ */
+Procedure rotacion_derecha_lista_circular(ListaCircular* lista)
+{
+    if (!lista || !lista->cabeza)
+    {
+        printf("Error: La lista circular no existe, o bien su nodo centinela no está implementado.\n");
+        return;
+    }
+
+    if (es_circular_vacia(*lista))  // Si está vacía no hace nada.
+    {
+        return;
+    }
+
+    if (lista->cabeza->siguiente->siguiente == lista->cabeza)  // Si tiene un solo elemento no hace nada.
+    {
+        return;
+    }
+
+    NodoCircular* penultimo = lista->cabeza;
+    NodoCircular* ultimo = lista->cabeza->siguiente;  // Se tratará de buscar el último elemento de la lista circular con este puntero
+
+    while (ultimo->siguiente != lista->cabeza)
+    {
+        penultimo = ultimo;
+        ultimo = ultimo->siguiente;
+    }
+
+    ultimo->siguiente = lista->cabeza->siguiente;
+    penultimo->siguiente = lista->cabeza;
+    lista->cabeza->siguiente = ultimo;
 }
 /* ----------------------------------------------------------------------------------------------------------------------------- */
