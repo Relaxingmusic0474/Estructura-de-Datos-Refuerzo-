@@ -1174,4 +1174,42 @@ bool es_circular_vacia(ListaCircular lista)
 
     return (lista.cabeza->siguiente == lista.cabeza);
 }
+
+Procedure imprimir_lista_circular_doble(ListaCircular lista)
+{
+    if (!(&lista) || !lista.cabeza)
+    {
+        return;
+    }
+
+    if (es_circular_vacia(lista))
+    {
+        printf("Ciclo()\n"); 
+        return; 
+    }
+
+    NodoCircular* actual = lista.cabeza->siguiente;
+    int vueltas = 0;
+
+    printf("Ciclo(");
+
+    do 
+    {
+        if (actual != lista.cabeza)  // El cabeza es el centinela asi que no se imprimirá
+        {
+            printf("%d -> ", actual->dato);    
+        }
+        
+        actual = actual->siguiente;
+
+        if (actual == lista.cabeza) 
+        {
+            vueltas++;
+        }
+    } 
+    while (vueltas < 2);  // da 2 vueltas completas
+
+    printf(")\n");
+}
+
 /* ----------------------------------------------------------------------------------------------------------------------------- */
