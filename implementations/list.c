@@ -1165,6 +1165,24 @@ Procedure eliminar_nodo_circular(ListaCircular* lista, Index posicion)
 }
 
 /**
+ * @brief Función que elimina el nodo inicial de una lista circular.
+ * @param lista La lista circular de la cual se quiere eliminar el nodo inicial.
+ */
+Procedure eliminar_nodo_circular_inicio(ListaCircular* lista)
+{
+    eliminar_nodo_circular(lista, 0);
+}
+
+/**
+ * @brief Función que elimina el último nodo de una lista circular.
+ * @param lista La lista circular de la cual se quiere eliminar el último nodo.
+ */
+Procedure eliminar_nodo_circular_final(ListaCircular* lista)
+{
+    eliminar_nodo_circular(lista, tamanho_lista_circular(*lista)-1);
+}
+
+/**
  * @brief Función para eliminar una lista circular, liberando toda su memoria.
  * @param lista La lista circular que se quiere eliminar.
  * @param liberar Booleano que indica si se quiere eliminar completamente, liberando toda su memoria e incluso no pudiendo acceder más a ella, o si solo se quiere vaciar.

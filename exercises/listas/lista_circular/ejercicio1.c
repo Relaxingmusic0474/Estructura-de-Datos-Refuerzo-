@@ -19,6 +19,10 @@ int main()
     imprimir_lista_circular(lista);
     eliminar_nodo_circular(&lista, 5);
     imprimir_lista_circular(lista);
+    eliminar_nodo_circular_final(&lista);
+    imprimir_lista_circular(lista);
+    eliminar_nodo_circular_inicio(&lista);
+    imprimir_lista_circular(lista);
     eliminar_lista_circular(&lista, true);
     return 0;
 }
