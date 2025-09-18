@@ -82,10 +82,10 @@ bool insertar_nodo_circular_inicio(ListaCircular* lista, ElemType valor);
 bool insertar_nodo_circular_final(ListaCircular* lista, ElemType valor);
 Procedure imprimir_lista_circular(ListaCircular lista);
 Natural tamanho_lista_circular(ListaCircular lista);
+Procedure eliminar_nodo_circular(ListaCircular* lista, Index posicion);
 Procedure eliminar_lista_circular(ListaCircular* lista, bool liberar);
 Procedure vaciar_lista_circular(ListaCircular* lista);
 bool es_circular_vacia(ListaCircular lista);
-Procedure imprimir_lista_circular_doble(ListaCircular lista);
 /* --------------------------------------------------------------- */
 
 #endif  // LIST_H

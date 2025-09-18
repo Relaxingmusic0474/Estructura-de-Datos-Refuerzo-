@@ -1111,6 +1111,60 @@ Natural tamanho_lista_circular(ListaCircular lista)
 }
 
 /**
+ * @brief Función para eliminar un nodo de una lista circular de una determinada posición.
+ * @param lista La lista circular de la cual se quiere eliminar el nodo.
+ * @param posicion La posición en la que está el nodo que se desea eliminar (0, 1, 2, ...)
+ */
+Procedure eliminar_nodo_circular(ListaCircular* lista, Index posicion)
+{
+    if (!lista)
+    {
+        printf("Error: La lista circular no existe.\n");
+        return;
+    }
+
+    if (!lista->cabeza)
+    {
+        printf("Error: La lista circular existe, pero no hay centinela.\n");
+        return;
+    }
+
+    if (es_circular_vacia(*lista))
+    {
+        printf("Error: La lista circular está vacía.  No se pueden eliminar nodos.\n");
+        return;
+    }
+
+    NodoCircular* prev = lista->cabeza;
+    NodoCircular* actual = lista->cabeza->siguiente;
+    Index pos_actual = 0;
+
+    while (actual != lista->cabeza)
+    {
+        if (pos_actual < posicion)
+        {
+            prev = actual;
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            if (pos_actual == posicion)
+            {
+                prev->siguiente = actual->siguiente;
+                free(actual);
+                return;
+            }
+        }
+
+        pos_actual++;   
+    }
+
+    printf("Error: No se pudo eliminar el nodo, porque la posición estaba fuera de rango.\n");
+    return;
+}
+
+/**
  * @brief Función para eliminar una lista circular, liberando toda su memoria.
  * @param lista La lista circular que se quiere eliminar.
  * @param liberar Booleano que indica si se quiere eliminar completamente, liberando toda su memoria e incluso no pudiendo acceder más a ella, o si solo se quiere vaciar.
@@ -1174,42 +1228,4 @@ bool es_circular_vacia(ListaCircular lista)
 
     return (lista.cabeza->siguiente == lista.cabeza);
 }
-
-Procedure imprimir_lista_circular_doble(ListaCircular lista)
-{
-    if (!(&lista) || !lista.cabeza)
-    {
-        return;
-    }
-
-    if (es_circular_vacia(lista))
-    {
-        printf("Ciclo()\n"); 
-        return; 
-    }
-
-    NodoCircular* actual = lista.cabeza->siguiente;
-    int vueltas = 0;
-
-    printf("Ciclo(");
-
-    do 
-    {
-        if (actual != lista.cabeza)  // El cabeza es el centinela asi que no se imprimirá
-        {
-            printf("%d -> ", actual->dato);    
-        }
-        
-        actual = actual->siguiente;
-
-        if (actual == lista.cabeza) 
-        {
-            vueltas++;
-        }
-    } 
-    while (vueltas < 2);  // da 2 vueltas completas
-
-    printf(")\n");
-}
-
 /* ----------------------------------------------------------------------------------------------------------------------------- */

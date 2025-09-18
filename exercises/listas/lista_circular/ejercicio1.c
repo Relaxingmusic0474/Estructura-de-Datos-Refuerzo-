@@ -17,9 +17,7 @@ int main()
     imprimir_lista_circular(lista);
     insertar_nodo_circular_inicio(&lista, 4);
     imprimir_lista_circular(lista);
-    imprimir_lista_circular_doble(lista);
-    vaciar_lista_circular(&lista);
-    insertar_nodo_circular(&lista, 12, 0);
+    eliminar_nodo_circular(&lista, 5);
     imprimir_lista_circular(lista);
     eliminar_lista_circular(&lista, true);
     return 0;
