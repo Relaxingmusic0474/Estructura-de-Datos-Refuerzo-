@@ -9,8 +9,9 @@
 
 typedef struct nodo Nodo, NodoCircular;
 typedef struct nodoDoble NodoDoble, NodoDobleCircular;
-typedef struct lista Lista, ListaCircular;  // Para que sirva la misma estructura para lista y lista circular
-typedef struct listaDoble ListaDoble, ListaDobleCircular;  // Para que sirva la misma estructura para lista doble y lista doble circular
+typedef struct lista Lista, ListaCircular;
+typedef struct listaDoble ListaDoble;
+typedef struct listaDobleCircular ListaDobleCircular;
 
 struct nodo
 {
@@ -33,6 +34,12 @@ struct nodoDoble
 struct listaDoble
 {
     NodoDoble* cabeza;
+};
+
+struct listaDobleCircular
+{
+    NodoDobleCircular* cabeza;
+    Natural tamanho;  // Este campo de la estructura se añadió por eficiencia
 };
 
 /* ------------ FUNCIONES PARA LISTAS ENLAZADAS SIMPLES ----------- */
@@ -91,6 +98,14 @@ Procedure vaciar_lista_circular(ListaCircular* lista);
 bool es_circular_vacia(ListaCircular lista);
 Procedure rotacion_izquierda_lista_circular(ListaCircular* lista);
 Procedure rotacion_derecha_lista_circular(ListaCircular* lista);
+/* --------------------------------------------------------------- */
+
+
+/* ------ FUNCIONES PARA LISTAS ENLAZADAS CIRCULARES DOBLES ------ */
+bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos);
+bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Index posicion);
+Procedure imprimir_lista_circular_doble(ListaDobleCircular lista);
+Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista);
 /* --------------------------------------------------------------- */
 
 #endif  // LIST_H

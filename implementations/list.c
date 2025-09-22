@@ -1357,3 +1357,190 @@ Procedure rotacion_derecha_lista_circular(ListaCircular* lista)
     lista->cabeza->siguiente = ultimo;
 }
 /* ----------------------------------------------------------------------------------------------------------------------------- */
+
+
+/* -------------------------------------------- LISTAS ENLAZADAS CIRCULARES DOBLES --------------------------------------------- */
+/**
+ * @brief Función que crea e inicializa una lista circular doble con un cierto número de elementos.
+ * @param lista La lista circular doble a crear.
+ * @param nro_elementos El número de elementos que tendrá la lista circular.
+ * @return true si la creación fue exitosa, false en caso contrario.
+ */
+bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos)
+{
+    Natural i;
+
+    for (i=0; i<nro_elementos; i++)
+    {
+        if (!insertar_nodo_circular_doble(lista, 0, 0))
+        {
+            eliminar_lista_circular_doble(lista);
+            printf("Error: No se pudo crear la lista correctamente.\n");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * @brief Función que inserta un nodo con cierto valor en una posición específica de una lista circular doble.
+ * @param lista La lista doble en la cual se insertará el nodo.
+ * @param valor El valor que contendrá el nodo que se insertará en la lista circular doble.
+ * @param posicion La posición relativa a la lista en la cual se insertará el nodo (0, 1, 2, ...).
+ * @return true si el nodo se insertó correctamente, false en caso de error en la inserción.
+ */
+bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Index posicion)
+{
+    if (!lista)
+    {
+        printf("Error: La lista no existe.\n");
+        return false;
+    }
+
+    NodoDobleCircular* nodo = calloc(1, sizeof(NodoDobleCircular));
+
+    if (!nodo)
+    {
+        printf("Error de asignación de memoria.\n");
+        return false;
+    }
+
+    nodo->dato = valor;
+    
+    // Caso de insertar en lista doble vacía
+    if (!lista->cabeza)  
+    {
+        lista->cabeza = nodo;
+        nodo->siguiente = lista->cabeza;
+        nodo->anterior = lista->cabeza;
+        lista->tamanho = 1;
+        return true;
+    }
+
+    NodoDobleCircular* siguiente = lista->cabeza;  // Inicializamos el nodo siguiente en el primer nodo de la lista
+    NodoDobleCircular* anterior = lista->cabeza->anterior;  // El anterior lo inicializamos en el último
+    Index posicion_actual;
+
+    // Caso de inserción al inicio o al final
+    if (posicion == 0 || posicion == lista->tamanho)
+    {
+        nodo->siguiente = siguiente;
+        nodo->anterior = anterior;
+        siguiente->anterior = nodo;
+        anterior->siguiente = nodo;
+    
+        if (posicion == 0)
+        {
+            lista->cabeza = nodo;  // Si es el caso de inserción al inicio, se cambia la cabeza
+        }
+    }
+
+    else
+    {
+        if (posicion > lista->tamanho)
+        {
+            printf("Error: Índice fuera de rango.  La lista circular doble tiene solo %hu elementos.\n", lista->tamanho);
+            free(nodo);
+            nodo = NULL;
+            return false;
+        }
+
+        if (posicion > (lista->tamanho)/2)
+        {
+            posicion_actual = lista->tamanho;
+
+            while (posicion_actual > posicion)
+            {
+                siguiente = siguiente->anterior;  // Primero se refiere al actual.  Se utilizó la misma variable para ahorrar memoria RAM.
+                anterior = anterior->anterior;
+                posicion_actual--;
+            }
+        }
+
+        else
+        {
+            posicion_actual = 0;
+
+            while (posicion_actual < posicion)
+            {
+                siguiente = siguiente->siguiente;
+                anterior = anterior->siguiente;
+                posicion_actual++;
+            }
+        }
+        
+        nodo->siguiente = siguiente;
+        nodo->anterior = anterior;
+        siguiente->anterior = nodo;
+        anterior->siguiente = nodo;
+    }
+
+    (lista->tamanho)++;
+    return true;
+}
+
+/**
+ * @brief Función que imprime los elementos de una lista circular de forma secuencial.
+ * @param lista La lista circular que se quiere imprimir.
+ */
+Procedure imprimir_lista_circular_doble(ListaDobleCircular lista)
+{
+    if (!(lista.cabeza))
+    {
+        printf("Ciclo()\n");
+        return;
+    }
+
+    NodoDobleCircular* actual = lista.cabeza;
+    Natural datos_mostrados = 0;
+
+    printf("Ciclo(");
+
+    while (datos_mostrados < lista.tamanho)
+    {
+        if (datos_mostrados == 0)
+        {
+            printf(" <-> ");
+        }
+
+        printf("%d <-> ", actual->dato);
+        datos_mostrados++;
+        actual = actual->siguiente;
+    }
+
+    printf(")\n");
+}
+
+/**
+ * @brief Función que elimina una lista circular doble, liberando la memoria de todos sus nodos y dejándola vacía.
+ * @param lista La lista circular doble que se quiere eliminar.
+ */
+Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista)
+{
+    if (!lista)
+    {
+        printf("Error: La lista no existe.\n");
+        return;
+    }
+
+    if (!lista->cabeza)  
+    {
+        return;  // Si está vacía no hace nada
+    }
+
+    NodoDobleCircular* nodo = lista->cabeza->siguiente;
+    NodoDobleCircular* temp;
+
+    while (nodo != lista->cabeza)
+    {
+        temp = nodo->siguiente;
+        free(nodo);
+        nodo = temp;
+    }
+
+    free(lista->cabeza);
+    lista->cabeza = NULL;
+    lista->tamanho = 0;
+}
+/* ----------------------------------------------------------------------------------------------------------------------------- */
