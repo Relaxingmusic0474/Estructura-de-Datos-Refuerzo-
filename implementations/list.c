@@ -1481,6 +1481,28 @@ bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Ind
 }
 
 /**
+ * @brief Función que inserta un nodo al inicio de una lista circular doble.
+ * @param lista La lista circular doble a la cual se le quiere insertar un nodo al inicio.
+ * @param valor El valor que tendrá el nodo que se insertará al inicio.
+ * @return El resultado de la función insertar_nodo_circular_doble, con el parámetro posición igual a 0.
+ */
+bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType valor)
+{
+    return insertar_nodo_circular_doble(lista, valor, 0);
+}
+
+/**
+ * @brief Función que inserta un nodo al final de una lista circular doble.
+ * @param lista La lista circular doble a la cual se le quiere insertar un nodo al final.
+ * @param valor El valor que tendrá el nodo que se insertará al final.
+ * @return El resultado de la función insertar_nodo_circular_doble, con el parámetro posición igual al tamaño de la lista.
+ */
+bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor)
+{
+    return insertar_nodo_circular_doble(lista, valor, tamanho_lista_circular_doble(*lista));
+}
+
+/**
  * @brief Función que imprime los elementos de una lista circular de forma secuencial.
  * @param lista La lista circular que se quiere imprimir.
  */
@@ -1510,6 +1532,16 @@ Procedure imprimir_lista_circular_doble(ListaDobleCircular lista)
     }
 
     printf(")\n");
+}
+
+/**
+ * @brief Función para saber el tamaño de una lista circular doble.
+ * @param lista Lista a la cual se le quiere determinar el tamaño.
+ * @return El número de elementos (nodos) de la lista circular doble.
+ */
+Natural tamanho_lista_circular_doble(ListaDobleCircular lista)
+{
+    return lista.tamanho;
 }
 
 /**

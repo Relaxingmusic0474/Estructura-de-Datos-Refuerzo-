@@ -12,6 +12,10 @@ int main()
     imprimir_lista_circular_doble(lista);
     insertar_nodo_circular_doble(&lista, 15, 4);
     imprimir_lista_circular_doble(lista);
+    insertar_nodo_circular_doble_final(&lista, 5);
+    imprimir_lista_circular_doble(lista);
+    insertar_nodo_circular_doble_inicio(&lista, 22);
+    imprimir_lista_circular_doble(lista);
     eliminar_lista_circular_doble(&lista);
     return 0;
 }
