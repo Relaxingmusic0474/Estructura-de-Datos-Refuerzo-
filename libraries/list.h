@@ -108,6 +108,9 @@ bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType val
 bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor);
 Procedure imprimir_lista_circular_doble(ListaDobleCircular lista);
 Natural tamanho_lista_circular_doble(ListaDobleCircular lista);
+Procedure eliminar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion);
+Procedure eliminar_nodo_circular_doble_inicio(ListaDobleCircular* lista);
+Procedure eliminar_nodo_circular_doble_final(ListaDobleCircular* lista);
 Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista);
 /* --------------------------------------------------------------- */
 

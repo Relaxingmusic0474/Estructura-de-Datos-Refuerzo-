@@ -1545,6 +1545,86 @@ Natural tamanho_lista_circular_doble(ListaDobleCircular lista)
 }
 
 /**
+ * @brief Función para eliminar un nodo de una posición específica de una lista circular doble.
+ * @param lista La lista de la cual se quiere eliminar un nodo.
+ * @param posicion La posición en la cual se encuentra el nodo que se quiere eliminar.
+ */
+Procedure eliminar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion)
+{
+    if (!lista)
+    {
+        printf("Error al eliminar: La lista circular doble no existe.\n");
+        return;
+    }
+
+    if (!lista->cabeza)
+    {
+        printf("Error al eliminar: La lista circular doble está vacía, porque la cabeza apunta a NULL.\n");
+        return;
+    }
+
+    if (posicion >= lista->tamanho)
+    {
+        printf("Error al eliminar: Índice fuera de rango.  La lista circular tiene solo %hu elementos.\n", lista->tamanho);
+        return;
+    }
+
+    NodoDobleCircular* actual = lista->cabeza;
+    Index posicion_actual;
+
+    if (posicion > lista->tamanho / 2)
+    {
+        actual = actual->anterior;
+        posicion_actual = lista->tamanho - 1;
+
+        while (posicion_actual > posicion)
+        {
+            actual = actual->anterior;
+            posicion_actual--;
+        }
+    }
+
+    else
+    {
+        posicion_actual = 0;
+
+        while (posicion_actual < posicion)
+        {
+            actual = actual->siguiente;
+            posicion_actual++;
+        }
+    }
+
+    if (posicion == 0)
+    {
+        lista->cabeza = lista->cabeza->siguiente;
+    }
+
+    actual->anterior->siguiente = actual->siguiente;
+    actual->siguiente->anterior = actual->anterior;
+    free(actual);
+    (lista->tamanho)--;
+}
+
+/**
+ * @brief Función para eliminar el primer nodo de una lista circular doble.
+ * @param lista La lista circular doble a la cual se le quiere eliminar su primer nodo.
+ */
+Procedure eliminar_nodo_circular_doble_inicio(ListaDobleCircular* lista)
+{
+    eliminar_nodo_circular_doble(lista, 0);
+}
+
+/**
+ * @brief Función para eliminar el último nodo de una lista circular doble.
+ * @param lista La lista circular doble a la cual se le quiere eliminar su último nodo.
+ */
+Procedure eliminar_nodo_circular_doble_final(ListaDobleCircular* lista)
+{
+    eliminar_nodo_circular_doble(lista, lista->tamanho-1);
+}
+
+/**
  * @brief Función que elimina una lista circular doble, liberando la memoria de todos sus nodos y dejándola vacía.
  * @param lista La lista circular doble que se quiere eliminar.
  */
