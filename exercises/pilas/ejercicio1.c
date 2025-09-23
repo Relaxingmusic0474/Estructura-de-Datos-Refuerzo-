@@ -8,10 +8,12 @@ int main()
     push(&pila, 27);
     push(&pila, 17);
     push(&pila, 8);
-    printf("PILA EN SENTIDO NORMAL:\n");
-    imprimir_pila(pila);
+    imprimir_pila(&pila);
     push(&pila, 33);
-    imprimir_pila(pila);
+    imprimir_pila(&pila);
+    pop(&pila);
+    pop(&pila);
+    imprimir_pila(&pila);
     eliminar_pila(&pila);
     return 0;
 }

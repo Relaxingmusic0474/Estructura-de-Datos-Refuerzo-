@@ -289,6 +289,18 @@ Natural tamanho_lista(Lista lista)
  */
 Procedure eliminar_nodo(Lista* lista, Index posicion)
 {
+    if (!lista)
+    {
+        printf("Error al eliminar: La lista simple no existe.\n");
+        return;
+    }
+    
+    if (!lista->cabeza || esta_vacia(*lista))
+    {
+        printf("Error al eliminar: La lista no tiene cabeza válida, o está vacía.\n");
+        return;
+    }
+
     Nodo* prev = lista->cabeza;
     Nodo* actual = lista->cabeza->siguiente;
     Index posicion_actual = 0;
@@ -1750,6 +1762,7 @@ Procedure eliminar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion
     actual->anterior->siguiente = actual->siguiente;
     actual->siguiente->anterior = actual->anterior;
     free(actual);
+    actual = NULL;
     (lista->tamanho)--;
 }
 
@@ -1798,13 +1811,11 @@ Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista)
         nodo = temp;
     }
 
-    printf("Holi.\n");
-
     free(lista->cabeza);
     lista->cabeza = NULL;
     lista->tamanho = 0;
 
-    printf("Yupi\n");
+
 }
 
 /**

@@ -50,26 +50,32 @@ NodoPila* top(Pila pila)
  * @brief Función para imprimir una pila.
  * @param pila La pila a imprimir.
  */
-Procedure imprimir_pila(Pila pila)
+Procedure imprimir_pila(Pila* pila)
 {
-    Pila inv;
+    Lista lista = {0};
+    ElemType valor_a_insertar;
 
-    inicializar_pila(&inv);
+    crear_lista_vacia(&lista);
 
+    while (!es_pila_vacia(*pila))
+    {
+        valor_a_insertar = top(*pila)->dato;
+        pop(pila);
+        insertar_nodo_inicio(&lista, valor_a_insertar);
+    }
+    
     printf("-----------------------------------------------------\n");
-
-    inv = invertir_pila(pila);
-
-    if (es_pila_vacia(inv))
+    
+    while (!esta_vacia(lista))
     {
-        return;  // En caso de error
+        valor_a_insertar = nodo_k_esimo(lista, 0)->dato;
+        
+        printf("| %d ", valor_a_insertar);
+        push(pila, valor_a_insertar);
+        eliminar_nodo_inicio(&lista);
     }
 
-    while (!es_pila_vacia(inv))
-    {
-        printf("| %d ", top(inv)->dato);
-        pop(&inv);
-    }
+    eliminar_lista(&lista, true);
         
     printf("|\n");
 
@@ -102,55 +108,5 @@ Procedure eliminar_pila(Pila* pila)
     {
         pop(pila);
     }
-}
-
-/**
- * @brief Función para hallar la pila invertida de una lista determinada.
- * @param pila La pila que se quiere invertir.
- * @return Una pila nueva, de tal modo que el elemento que estaba al fondo en la pila original (se colocó primero), ahora queda encima.
- */
-Pila invertir_pila(Pila pila)
-{
-    Pila copia_pila = pila;
-    Pila tmp;
-
-    inicializar_pila(&tmp);
-
-    while (!es_pila_vacia(copia_pila))
-    {
-        if (!push(&tmp, top(copia_pila)->dato))
-        {
-            return (Pila) {.tamanho = 0, .cabeza = NULL};  // A modo de retornar error en caso de falla.
-        }
-
-        printf("Tamaño pila: %hu\n", copia_pila.tamanho);
-        pop(&copia_pila);
-    }
-
-    return tmp;
-}
-
-/**
- * @brief Función para clonar profundamente una pila.
- * @param pila La pila que se quiere clonar.
- * @return Una copia de la pila deseada.
- */
-Pila clonar_pila(Pila pila)
-{
-    Pila pila_invertida;
-    Pila copia;
-
-    inicializar_pila(&pila_invertida);
-    inicializar_pila(&copia);
-
-    pila_invertida = invertir_pila(pila);
-
-    while (!es_pila_vacia(pila_invertida))
-    {
-        push(&copia, top(pila_invertida)->dato);
-        pop(&pila_invertida);
-    }
-
-    return copia;
 }
 /* ------------------------------------------------------------------------------------------------------------------------------ */
