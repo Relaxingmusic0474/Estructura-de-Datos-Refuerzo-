@@ -1710,6 +1710,12 @@ Procedure eliminar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion
         return;
     }
 
+    if (lista->tamanho == 1)  // Por seguridad, si hay un solo elemento, se toma como caso especial, y se elimina la lista (para asegurarse que la cabeza quede en NULL)
+    {
+        eliminar_lista_circular_doble(lista);
+        return;
+    }
+
     NodoDobleCircular* actual = lista->cabeza;
     Index posicion_actual;
 
@@ -1792,9 +1798,13 @@ Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista)
         nodo = temp;
     }
 
+    printf("Holi.\n");
+
     free(lista->cabeza);
     lista->cabeza = NULL;
     lista->tamanho = 0;
+
+    printf("Yupi\n");
 }
 
 /**

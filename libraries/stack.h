@@ -18,7 +18,12 @@ struct pilaArray
 Procedure inicializar_pila(Pila* pila);
 bool push(Pila* pila, ElemType valor);
 Procedure pop(Pila* pila);
-NodoPila* top(Pila* pila);
+NodoPila* top(Pila pila);
+Procedure imprimir_pila(Pila pila);
+bool es_pila_vacia(Pila pila);
+Procedure eliminar_pila(Pila* pila);
+Pila invertir_pila(Pila pila);
+Pila clonar_pila(Pila pila);
 /* -------------------------------------------------------------------- */
 
 #endif  // STACK_H
