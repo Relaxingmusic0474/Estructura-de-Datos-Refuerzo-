@@ -1503,6 +1503,44 @@ bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valo
 }
 
 /**
+ * @brief Función que intenta encontrar un valor en una lista enlazada circular doble.
+ * @param lista La lista circular doble en la que se buscará el valor.
+ * @param valor_buscado El valor que se quiere buscar.
+ * @return La posición de la lista enlazada circular doble en la cual se encontró el valor (si no se encuentra, devuelve -1).
+ */
+Index buscar_valor_en_lista_circular_doble(ListaDobleCircular* lista, ElemType valor_buscado)
+{
+    if (!lista)
+    {
+        printf("Error al buscar: La lista circular doble no existe.\n");
+        return -1;
+    }
+
+    if (!lista->cabeza)
+    {
+        printf("Error al buscar: La lista circular doble está vacía.\n");
+        return -1;
+    }
+
+    NodoDobleCircular* actual = lista->cabeza;
+
+    Index posicion_actual = 0;
+
+    while (actual != lista->cabeza || posicion_actual == 0)
+    {
+        if (actual->dato == valor_buscado)
+        {
+            return posicion_actual;
+        }
+
+        actual = actual->siguiente;
+        posicion_actual++;
+    }
+
+    return -1;
+}
+
+/**
  * @brief Función que imprime los elementos de una lista circular de forma secuencial.
  * @param lista La lista circular que se quiere imprimir.
  */

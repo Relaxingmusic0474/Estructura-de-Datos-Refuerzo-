@@ -106,12 +106,15 @@ bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos
 bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Index posicion);
 bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType valor);
 bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor);
+Index buscar_valor_en_lista_circular_doble(ListaDobleCircular* lista, ElemType valor_buscado);
 Procedure imprimir_lista_circular_doble(ListaDobleCircular lista);
 Natural tamanho_lista_circular_doble(ListaDobleCircular lista);
 Procedure eliminar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion);
 Procedure eliminar_nodo_circular_doble_inicio(ListaDobleCircular* lista);
 Procedure eliminar_nodo_circular_doble_final(ListaDobleCircular* lista);
 Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista);
+Procedure rotacion_izquierda_lista_circular_doble(ListaDobleCircular* lista);
+Procedure rotacion_derecha_lista_circular_doble(ListaDobleCircular* lista);
 /* --------------------------------------------------------------- */
 
 #endif  // LIST_H
