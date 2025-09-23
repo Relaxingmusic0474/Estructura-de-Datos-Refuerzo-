@@ -37,6 +37,9 @@ int main()
     imprimir_lista_circular(lista);
     rotacion_derecha_lista_circular(&lista);
     imprimir_lista_circular(lista);  // Volvió a quedar originalmente como estaba luego de las rotaciones
+    modificar_nodo_circular(&lista, 4, 14);
+    modificar_nodo_circular(&lista, 5, 17);
+    imprimir_lista_circular(lista);
     eliminar_lista_circular(&lista, true);
     return 0;
 }

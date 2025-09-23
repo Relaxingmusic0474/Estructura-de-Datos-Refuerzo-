@@ -1034,6 +1034,46 @@ bool insertar_nodo_circular_final(ListaCircular* lista, ElemType valor)
 }
 
 /**
+ * @brief Función para modificar el valor de un cierto nodo de una lista circular.
+ * @param lista La lista circular a modificar.
+ * @param posicion La posición en la que está el nodo que se quiere modificar (0, 1, 2, ...).
+ * @param valor El nuevo valor que tendrá el nodo.
+ */
+Procedure modificar_nodo_circular(ListaCircular* lista, Index posicion, ElemType valor)
+{
+    if (!lista || !lista->cabeza || es_circular_vacia(*lista))
+    {
+        printf("Error al modificar: La lista circular no existe, o bien, está vacía.\n");
+        return;
+    }
+
+    NodoCircular* actual = lista->cabeza->siguiente;
+    Index posicion_actual = 0;
+
+    while (actual != lista->cabeza || posicion_actual == 0)
+    {
+        if (posicion_actual < posicion)
+        {
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            if (posicion_actual == posicion)
+            {
+                actual->dato = valor;
+                return;
+            }
+        }
+
+        posicion_actual++;
+    }
+
+    printf("Error al modificar: Índice fuera de rango.  La lista circular tiene solo %hu elementos.\n", posicion_actual);
+    return;
+}
+
+/**
  * @brief Función que intenta encontrar un valor en una lista enlazada circular.
  * @param lista La lista circular en la que se buscará el valor.
  * @param valor_buscado El valor que se quiere buscar.
@@ -1384,6 +1424,45 @@ bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos
 }
 
 /**
+ * @brief Función que devuelve el nodo k-ésimo de una lista circular doblemente enlazada (partiendo de 0).
+ * @param lista La lista circular doble que se recorrerá.
+ * @param k La posición del nodo que nos interesa (0, 1, 2, ...).
+ * @return El puntero al nodo deseado de la lista circular doble.
+ */
+NodoDobleCircular* nodo_circular_doble_k_esimo(ListaDobleCircular lista, Index k)
+{
+    if (!(lista.cabeza))
+    {
+        printf("Error: La lista doble está vacía.\n");
+        return NULL;
+    }
+
+    NodoDobleCircular* actual = lista.cabeza;
+    Index posicion_actual = 0;
+
+    while (actual != lista.cabeza || posicion_actual == 0)
+    {
+        if (posicion_actual < k)
+        {
+            actual = actual->siguiente;
+        }
+
+        else
+        {
+            if (posicion_actual == k)
+            {
+                return actual;
+            }
+        }
+
+        posicion_actual++;
+    }
+
+    printf("Error: Índice fuera de rango.  La lista circular doble tiene solo %hu elementos.\n", lista.tamanho);
+    return NULL;
+}
+
+/**
  * @brief Función que inserta un nodo con cierto valor en una posición específica de una lista circular doble.
  * @param lista La lista doble en la cual se insertará el nodo.
  * @param valor El valor que contendrá el nodo que se insertará en la lista circular doble.
@@ -1500,6 +1579,30 @@ bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType val
 bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor)
 {
     return insertar_nodo_circular_doble(lista, valor, tamanho_lista_circular_doble(*lista));
+}
+
+/**
+ * @brief Función para modificar un cierto nodo de una lista circular doble.
+ * @param lista La lista que se quiere modificar.
+ * @param posicion La posición en la que se encuentra el nodo a modificar.
+ * @param valor El nuevo valor que tendrá el nodo.
+ */
+Procedure modificar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion, ElemType valor)
+{
+    if (!lista)
+    {
+        printf("Error: La lista circular doble no existe.\n");
+        return;
+    }
+
+    NodoDobleCircular* objetivo = nodo_circular_doble_k_esimo(*lista, posicion);
+
+    if (!objetivo)
+    {
+        return;
+    }
+
+    objetivo->dato = valor;
 }
 
 /**
@@ -1692,5 +1795,57 @@ Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista)
     free(lista->cabeza);
     lista->cabeza = NULL;
     lista->tamanho = 0;
+}
+
+/**
+ * @brief Función que rota los elementos de una lista circular doble hacia la izquierda.
+ * @param lista La lista circular doble a rotar.
+ */
+Procedure rotacion_izquierda_lista_circular_doble(ListaDobleCircular* lista)
+{
+    if (!lista)
+    {
+        printf("Error al rotar: La lista circular doble no existe.\n");
+        return;
+    }
+
+    if (!lista->cabeza)
+    {
+        printf("Error al rotar: La lista circular doble está vacía.\n");
+        return;
+    }
+
+    if (lista->tamanho == 1)
+    {
+        return;
+    }
+
+    lista->cabeza = lista->cabeza->siguiente;  // La cabeza se corre a la derecha para que rote a la izquierda.
+}
+
+/**
+ * @brief Función que rota los elementos de una lista circular doble hacia la derecha.
+ * @param lista La lista circular doble a rotar.
+ */
+Procedure rotacion_derecha_lista_circular_doble(ListaDobleCircular* lista)
+{
+    if (!lista)
+    {
+        printf("Error al rotar: La lista circular doble no existe.\n");
+        return;
+    }
+
+    if (!lista->cabeza)
+    {
+        printf("Error al rotar: La lista circular doble está vacía.\n");
+        return;
+    }
+
+    if (lista->tamanho == 1)
+    {
+        return;
+    }
+
+    lista->cabeza = lista->cabeza->anterior;  // La cabeza se corre a la izquierda para que rote a la derecha.
 }
 /* ----------------------------------------------------------------------------------------------------------------------------- */

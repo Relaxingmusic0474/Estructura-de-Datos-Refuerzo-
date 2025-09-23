@@ -87,6 +87,7 @@ bool crear_lista_circular(ListaCircular* lista, Natural nro_elementos);
 bool insertar_nodo_circular(ListaCircular* lista, ElemType valor, Index posicion);
 bool insertar_nodo_circular_inicio(ListaCircular* lista, ElemType valor);
 bool insertar_nodo_circular_final(ListaCircular* lista, ElemType valor);
+Procedure modificar_nodo_circular(ListaCircular* lista, Index posicion, ElemType valor);
 Index buscar_valor_en_lista_circular(ListaCircular* lista, ElemType valor_buscado);
 Procedure imprimir_lista_circular(ListaCircular lista);
 Natural tamanho_lista_circular(ListaCircular lista);
@@ -106,6 +107,7 @@ bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos
 bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Index posicion);
 bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType valor);
 bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor);
+Procedure modificar_nodo_circular_doble(ListaDobleCircular* lista, Index posicion, ElemType valor);
 Index buscar_valor_en_lista_circular_doble(ListaDobleCircular* lista, ElemType valor_buscado);
 Procedure imprimir_lista_circular_doble(ListaDobleCircular lista);
 Natural tamanho_lista_circular_doble(ListaDobleCircular lista);
