@@ -104,6 +104,7 @@ Procedure rotacion_derecha_lista_circular(ListaCircular* lista);
 
 /* ------ FUNCIONES PARA LISTAS ENLAZADAS CIRCULARES DOBLES ------ */
 bool crear_lista_circular_doble(ListaDobleCircular* lista, Natural nro_elementos);
+NodoDobleCircular* nodo_circular_doble_k_esimo(ListaDobleCircular lista, Index k);
 bool insertar_nodo_circular_doble(ListaDobleCircular* lista, ElemType valor, Index posicion);
 bool insertar_nodo_circular_doble_inicio(ListaDobleCircular* lista, ElemType valor);
 bool insertar_nodo_circular_doble_final(ListaDobleCircular* lista, ElemType valor);
