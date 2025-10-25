@@ -8,7 +8,17 @@
 Procedure inicializar_pila(Pila* pila)
 {
     pila->cabeza = NULL;
-    pila->tamanho = 0;
+    // pila->tamanho = 0;
+}
+
+/**
+ * @brief Función que crea una pila vacía.
+ * @param pila Puntero a la pila vacía a crear.
+ * @return true si la pila se crea vacía correctamente, false en caso de error.
+ */
+bool crear_pila_vacia(Pila* pila)
+{
+    return crear_lista_vacia(pila);
 }
 
 /**
@@ -19,7 +29,7 @@ Procedure inicializar_pila(Pila* pila)
  */
 bool push(Pila* pila, ElemType valor)
 {
-    return insertar_nodo_circular_doble_final(pila, valor);
+    return insertar_nodo_inicio(pila, valor);
 }
 
 /**
@@ -28,7 +38,7 @@ bool push(Pila* pila, ElemType valor)
  */
 Procedure pop(Pila* pila)
 {
-    eliminar_nodo_circular_doble_final(pila);  // Se elimina del mismo lugar del que se insertó (el final en este caso)
+    eliminar_nodo_inicio(pila);  // Se elimina del mismo lugar del que se insertó (el final en este caso)
 }
 
 /**
@@ -38,12 +48,12 @@ Procedure pop(Pila* pila)
  */
 NodoPila* top(Pila pila)
 {
-    if (pila.tamanho == 0)
+    if (!pila.cabeza)
     {
         return NULL;
     }
 
-    return pila.cabeza->anterior;
+    return pila.cabeza->siguiente;
 }
 
 /**
@@ -52,30 +62,31 @@ NodoPila* top(Pila pila)
  */
 Procedure imprimir_pila(Pila* pila)
 {
-    Lista lista = {0};
+    Pila pila_tmp = {0};
+
     ElemType valor_a_insertar;
 
-    crear_lista_vacia(&lista);
+    crear_pila_vacia(&pila_tmp);
 
     while (!es_pila_vacia(*pila))
     {
         valor_a_insertar = top(*pila)->dato;
         pop(pila);
-        insertar_nodo_inicio(&lista, valor_a_insertar);
+        push(&pila_tmp, valor_a_insertar);
     }
     
     printf("-----------------------------------------------------\n");
     
-    while (!esta_vacia(lista))
+    while (!esta_vacia(pila_tmp))
     {
-        valor_a_insertar = nodo_k_esimo(lista, 0)->dato;
+        valor_a_insertar = pila_tmp.cabeza->siguiente->dato;
         
         printf("| %d ", valor_a_insertar);
         push(pila, valor_a_insertar);
-        eliminar_nodo_inicio(&lista);
+        pop(&pila_tmp);
     }
 
-    eliminar_lista(&lista, true);
+    eliminar_pila(&pila_tmp);
         
     printf("|\n");
 
@@ -89,14 +100,14 @@ Procedure imprimir_pila(Pila* pila)
  */
 bool es_pila_vacia(Pila pila)
 {
-    return pila.tamanho == 0;
+    return esta_vacia(pila);
 }
 
 /**
- * @brief Función para eliminar una pila, liberando todos sus nodos.
- * @param pila La pila a eliminar.
+ * @brief Función para vaciar una pila, pero dejando el nodo centinela.
+ * @param pila La pila a vaciar.
  */
-Procedure eliminar_pila(Pila* pila)
+Procedure vaciar_pila(Pila* pila)
 {
     if (!pila)
     {
@@ -107,6 +118,24 @@ Procedure eliminar_pila(Pila* pila)
     while (!es_pila_vacia(*pila))
     {
         pop(pila);
+    }
+}
+
+/**
+ * @brief Función para eliminar una pila, liberando todos sus nodos.
+ * @param pila La pila a eliminar.
+ */
+Procedure eliminar_pila(Pila* pila)
+{
+    vaciar_pila(pila);
+
+    if (pila)
+    {
+        if (pila->cabeza)
+        {
+            free(pila->cabeza);
+            pila->cabeza = NULL;
+        }
     }
 }
 /* ------------------------------------------------------------------------------------------------------------------------------ */

@@ -3,8 +3,8 @@
 
 #include "list.h"
 
-typedef ListaDobleCircular Pila;  // Debido a su eficiencia en inserciones y eliminaciones (O(1) en vez de O(n) como en listas simples), será el tipo por defecto para pilas
-typedef NodoDobleCircular NodoPila;
+typedef Lista Pila;  // Debido a su eficiencia en inserciones y eliminaciones (O(1) en vez de O(n) como en listas simples), será el tipo por defecto para pilas
+typedef Nodo NodoPila;
 typedef struct pilaArray PilaArray;
 
 struct pilaArray
@@ -16,11 +16,13 @@ struct pilaArray
 
 /* ----------------------- FUNCIONES PARA PILAS ----------------------- */
 Procedure inicializar_pila(Pila* pila);
+bool crear_pila_vacia(Pila* pila);
 bool push(Pila* pila, ElemType valor);
 Procedure pop(Pila* pila);
 NodoPila* top(Pila pila);
 Procedure imprimir_pila(Pila* pila);
 bool es_pila_vacia(Pila pila);
+Procedure vaciar_pila(Pila* pila);
 Procedure eliminar_pila(Pila* pila);
 Pila invertir_pila(Pila pila);
 /* -------------------------------------------------------------------- */

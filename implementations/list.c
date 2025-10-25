@@ -411,6 +411,11 @@ Procedure vaciar_lista(Lista* lista)
  */
 bool esta_vacia(Lista lista)
 {
+    if (!lista.cabeza)
+    {
+        return true;
+    }
+
     return (lista.cabeza->siguiente == NULL);
 }
 
