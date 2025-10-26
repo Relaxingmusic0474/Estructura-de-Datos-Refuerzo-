@@ -1819,8 +1819,6 @@ Procedure eliminar_lista_circular_doble(ListaDobleCircular* lista)
     free(lista->cabeza);
     lista->cabeza = NULL;
     lista->tamanho = 0;
-
-
 }
 
 /**

@@ -5,7 +5,7 @@
 
 typedef Lista Pila;  // Debido a su eficiencia en inserciones y eliminaciones (O(1) en vez de O(n) como en listas simples), será el tipo por defecto para pilas
 typedef Nodo NodoPila;
-typedef struct pilaArray PilaArray;
+typedef struct pilaArray PilaArray;  // ESTO QUEDARÁ COMO TAREA PARA LAS VACACIONES DE VERANO
 
 struct pilaArray
 {

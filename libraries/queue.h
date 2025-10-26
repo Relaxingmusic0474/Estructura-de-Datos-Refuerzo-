@@ -5,7 +5,7 @@
 
 typedef ListaDobleCircular Cola;  // Debido a su eficiencia en inserciones y eliminaciones (O(1) en vez de O(n) como en listas simples), será el tipo por defecto para colas
 typedef NodoDobleCircular NodoCola;
-typedef struct colaArray ColaArray;
+typedef struct colaArray ColaArray;  // ESTO QUEDARÁ COMO TAREA PARA VACACIONES DE VERANO
 
 struct colaArray
 {
@@ -23,6 +23,7 @@ NodoCola* rear(Cola cola);
 Procedure imprimir_cola(Cola* cola);
 bool es_cola_vacia(Cola cola);
 Procedure eliminar_cola(Cola* cola);
+Procedure vaciar_cola(Cola* cola);
 /* -------------------------------------------------------------------- */
 
 #endif  // QUEUE_H
