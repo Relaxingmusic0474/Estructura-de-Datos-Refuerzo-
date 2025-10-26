@@ -43,6 +43,7 @@ struct listaDobleCircular
 };
 
 /* ------------ FUNCIONES PARA LISTAS ENLAZADAS SIMPLES ----------- */
+Procedure inicializar_lista(Lista* lista);
 bool crear_lista_vacia(Lista* lista);
 bool crear_lista(Lista* lista, Natural nro_elementos);
 Nodo* nodo_k_esimo(Lista lista, Index k);

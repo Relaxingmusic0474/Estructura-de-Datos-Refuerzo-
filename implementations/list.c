@@ -2,6 +2,15 @@
 
 /* -------------------------------------------------- LISTAS ENLAZADAS SIMPLES -------------------------------------------------- */
 /**
+ * @brief Función para inicializar una lista enlazada simple.
+ * @param lista La lista que se quiere inicializar.
+ */
+Procedure inicializar_lista(Lista* lista)
+{
+    lista->cabeza = NULL;
+}
+
+/**
  * @brief Función que crea una lista vacía (con un único nodo y que apunta a NULL).
  * @param lista La lista que se quiere crear vacía.
  * @return true si se logró crear, false en caso contrario.
@@ -252,6 +261,12 @@ Index buscar_valor_en_lista(Lista* lista, ElemType valor_buscado)
  */
 Procedure imprimir_lista(Lista lista)
 {
+    if (esta_vacia(lista))
+    {
+        printf("NULL\n");
+        return;
+    }
+
     Nodo* actual = lista.cabeza->siguiente;
 
     while (actual)
