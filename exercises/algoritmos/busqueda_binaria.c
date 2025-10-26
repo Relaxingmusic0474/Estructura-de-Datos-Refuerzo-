@@ -1,4 +1,4 @@
-#include "../libraries/searching.h"
+#include "../../libraries/searching.h"
 
 int main(int argc, char* argv[])
 {
@@ -35,18 +35,18 @@ int main(int argc, char* argv[])
         }
     }
 
-    busqueda_secuencial(&data, &dato_buscado);
+    busqueda_binaria(&data, 0, data.tamanho-1, &dato_buscado, QUICKSORT);
 
-    if (dato_buscado.encontrado)
+    if (dato_buscado.encontrado && dato_buscado.posicion != INDEX_NO_VALIDO)
     {
         printf("- Dato encontrado en la posicion %hu del arreglo de metadatos.\n", dato_buscado.posicion);
     }
 
     else
     {
-        printf("- Dato no encontrado en el arreglo de metadatos\n");
+        printf("- Dato no encontrado en el arreglo de metadatos.\n");
     }
 
     free(data.arreglo);
     return 0;
-}
+} 
