@@ -6,6 +6,7 @@
         "hashing.h": "c",
         "searching.h": "c",
         "stdio.h": "c",
-        "sorting.h": "c"
+        "sorting.h": "c",
+        "tree.h": "c"
     }
 }
