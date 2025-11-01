@@ -48,6 +48,31 @@ bool crear_heap(Heap* heap, TipoHeap tipo, Natural capacidad)
 }
 
 /**
+ * @brief Función para construir un heap a partir de un arreglo de elementos.
+ * @param heap El heap a construir.
+ * @param tipo El tipo de heap a construir (maxheap o minheap).
+ * @param array El arreglo o puntero con los elementos que se quieren poner en el heap.
+ * @param tamanho El tamaño del arreglo.
+ * @return true si se logró construir correctamente el heap, false en caso contrario.
+ */
+bool construir_heap(Heap* heap, TipoHeap tipo, ElemType array[], Natural tamanho)
+{
+    if (!crear_heap(heap, tipo, tamanho))
+    {
+        return false;
+    }
+
+    for (Natural i=0; i<tamanho; i++)
+    {
+        heap->elementos[i] = array[i];
+    }
+
+    heap->tamanho = tamanho;
+    amontonar_heap_completo(heap);
+    return true;
+}
+
+/**
  * @brief Función para redimensionar un heap.
  * @param heap El heap a redimensionar.
  * @param nueva_capacidad La capacidad nueva que soportará el heap.
@@ -167,12 +192,78 @@ Procedure amontonar_heap_completo(Heap* heap)
         return;  // Heap vacío o con un solo elemento -> No hace nada
     }
 
-    Index indice_inicial = (heap->tamanho-1)/2;
-
-    while (indice_inicial != 0)
+    Index indice = (heap->tamanho-1) >> 1;
+    
+    while (true)
     {
+        Index posicion = indice;
+        bool salir = false;
         
+        while (!salir)
+        {
+            Index hijo_izquierdo = HIJO_IZQUIERDO(posicion);
+            Index hijo_derecho = HIJO_DERECHO(posicion);
+            
+            if (hijo_izquierdo >= heap->tamanho)  //  No existe ninguno de los dos hijos
+            {
+                salir = true;
+            }
 
+            else if (hijo_derecho >= heap->tamanho)  // Solo hijo izquierdo existe
+            {
+                //if (posicion <= ((heap->tamanho-1) >> 1))
+                //{
+                if ((heap->tipo == MAX_HEAP && heap->elementos[posicion] < heap->elementos[hijo_izquierdo]) ||
+                    (heap->tipo == MIN_HEAP && heap->elementos[posicion] > heap->elementos[hijo_izquierdo]))
+                {
+                    swap(&heap->elementos[posicion], &heap->elementos[hijo_izquierdo]);
+                    posicion = hijo_izquierdo;
+                }
+                
+                else
+                {
+                    salir = true;
+                }
+                //}
+            }
+
+            else  // Ambos hijos existen
+            {
+                Index hijo_X;
+                
+                if (heap->tipo == MAX_HEAP)
+                {
+                    hijo_X = (MAX(heap->elementos[hijo_izquierdo], heap->elementos[hijo_derecho]) == heap->elementos[hijo_izquierdo]) ? hijo_izquierdo : hijo_derecho;
+                }
+
+                else  // MIN_HEAP
+                {
+                    hijo_X = (MIN(heap->elementos[hijo_izquierdo], heap->elementos[hijo_derecho]) == heap->elementos[hijo_izquierdo]) ? hijo_izquierdo : hijo_derecho;
+                }
+                
+                //if (posicion <= ((heap->tamanho-1) >> 1))
+                //{
+                if ((heap->tipo == MAX_HEAP && heap->elementos[posicion] < heap->elementos[hijo_X]) ||
+                    (heap->tipo == MIN_HEAP && heap->elementos[posicion] > heap->elementos[hijo_X]))
+                {
+                    swap(&heap->elementos[posicion], &heap->elementos[hijo_X]);
+                    posicion = hijo_X;
+                }
+                    
+                else
+                {
+                    salir = true;
+                }
+                //}                
+            }
+        }
+
+        if (indice == 0)
+        {
+            break;
+        }
+
+        indice--;
     }
 }
 
@@ -183,23 +274,70 @@ Procedure amontonar_heap_completo(Heap* heap)
  */
 bool insertar_dato_heap(ElemType dato, Heap* heap)
 {
-    if (!heap->elementos)
+    if (!heap || !heap->elementos)
     {
-        printf("Error: El heap aún no está creado.  No es posible la inserción.\n");
+        printf("Error: El heap es NULL o bien aún no está creado.  No es posible la inserción.\n");
         return false;
     }
 
-    if (heap->tamanho == heap->capacidad)
+    if (heap->tamanho >= heap->capacidad)  // Cuando se alcanza la capacidad máxima
     {
         Natural nueva_capacidad = 2*heap->capacidad;
 
-        if (redimensionar_heap(heap, nueva_capacidad))
+        if (!redimensionar_heap(heap, nueva_capacidad))
         {
-            
+            printf("Error: No se pudo insertar el dato correctamente.\n");
+            return false;
         }
+
+        heap->elementos[heap->capacidad] = dato;
+        heap->tamanho++;
+        heap->capacidad = nueva_capacidad;
     }
 
+    else
+    {
+        heap->elementos[heap->tamanho] = dato;
+        heap->tamanho++;
+    }
 
+    amontonar_heap_secuencial(heap);  // El nuevo elemento se acomoda en donde corresponde, para no perder la propiedad de heap.
+    return true;
+}
+
+/**
+ * @brief Función para describir un heap, para que su representación visual sea fácil de dibujar o imaginar.
+ * @param heap El heap a imprimir.
+ */
+Procedure imprimir_heap(Heap heap)
+{
+    if (!heap.elementos)
+    {
+        printf("Error: No se pudo imprimir el heap ya que aún no está creado.\n");
+        return;
+    }
+
+    Index hijo_izq, hijo_der;
+
+    for (Natural i=0; i<heap.tamanho; i++)
+    {
+        printf("Elemento: %d  ->  ", heap.elementos[i]);
+
+        hijo_izq = HIJO_IZQUIERDO(i);
+        hijo_der = HIJO_DERECHO(i);
+        
+        if (hijo_izq < heap.tamanho)
+        {
+            printf("Hijo izquierdo: %d", heap.elementos[hijo_izq]);
+        }
+
+        if (hijo_der < heap.tamanho)
+        {
+            printf(", Hijo derecho: %d", heap.elementos[hijo_der]);
+        }
+
+        printf("\n");
+    }
 }
 
 /**
