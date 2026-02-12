@@ -335,7 +335,15 @@ Procedure heapsort(Heap* heap)
             
             if (hijo_derecho < heap->tamanho)
             {
-                hijoX = (heap->elementos[hijo_izquierdo] >= heap->elementos[hijo_derecho]) ?  hijo_izquierdo : hijo_derecho;
+                if (heap->tipo == MAX_HEAP)
+                {
+                    hijoX = (heap->elementos[hijo_izquierdo] >= heap->elementos[hijo_derecho]) ?  hijo_izquierdo : hijo_derecho;
+                }
+
+                else  // MIN_HEAP
+                {
+                    hijoX = (heap->elementos[hijo_izquierdo] <= heap->elementos[hijo_derecho]) ? hijo_izquierdo : hijo_derecho;
+                }    
             }
 
             if (heap->tipo == MAX_HEAP)
@@ -343,6 +351,14 @@ Procedure heapsort(Heap* heap)
                 if (heap->elementos[padre] < heap->elementos[hijoX])
                 {
                     swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                    padre = hijoX;
+                    hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                    hijo_derecho = HIJO_DERECHO(padre);
+                }
+
+                else
+                {
+                    break;
                 }
             }
 
@@ -351,12 +367,16 @@ Procedure heapsort(Heap* heap)
                 if (heap->elementos[padre] > heap->elementos[hijoX])
                 {
                     swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                    padre = hijoX;
+                    hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                    hijo_derecho = HIJO_DERECHO(padre);
+                }
+
+                else
+                {
+                    break;
                 }
             }
-            
-            padre = hijoX;
-            hijo_izquierdo = HIJO_IZQUIERDO(padre);
-            hijo_derecho = HIJO_DERECHO(padre);
         }
     }
 
