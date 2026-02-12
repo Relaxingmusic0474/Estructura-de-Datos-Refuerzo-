@@ -268,6 +268,102 @@ Procedure amontonar_heap_completo(Heap* heap)
 }
 
 /**
+ * @brief Función para amontonar un heap partiendo desde arriba, "eliminando" el nodo raíz, intercambiándolo con el último elemento e ir acomodándolos secuencialmente.
+ * @param heap El puntero al heap a amontonar.
+ */
+Procedure amontonar_heap_hacia_abajo(Heap* heap)
+{
+    if (!heap || !heap->elementos)
+    {
+        printf("Error: El heap o sus elementos son NULL.  No puede amontonarse.\n");
+        return;
+    }
+
+    if (heap->tipo == HEAP_NO_VAL)
+    {
+        printf("Error: Tipo de heap no válido.  No puede amontonarse.\n");
+        return;
+    }
+
+    if (heap->tamanho == 0 || heap->tamanho == 1)
+    {
+        return;  // Heap vacío o con un solo elemento -> No hace nada
+    }
+    
+
+}
+
+/**
+ * @brief Ordena un heap.
+ * @param heap El puntero al heap a ordenar.
+ */
+Procedure heapsort(Heap* heap)
+{
+    if (!heap || !heap->elementos)
+    {
+        printf("Error: El heap o sus elementos son NULL.  No puede ordenarse.\n");
+        return;
+    }
+
+    if (heap->tipo == HEAP_NO_VAL)
+    {
+        printf("Error: Tipo de heap no válido.  No puede ordenarse.\n");
+        return;
+    }
+
+    if (heap->tamanho == 0 || heap->tamanho == 1)
+    {
+        return;  // Heap vacío o con un solo elemento -> No hace nada
+    }
+
+    amontonar_heap_completo(heap);
+
+    Natural tamanho = heap->tamanho;
+
+    while (heap->tamanho != 1)
+    {
+        swap(&heap->elementos[0], &heap->elementos[heap->tamanho-1]);
+
+        heap->tamanho--;
+
+        Index hijo_izquierdo = 1, hijo_derecho = 2;
+
+        while (hijo_izquierdo < heap->tamanho)
+        {
+            Index padre = PADRE(hijo_izquierdo);
+            Index hijoX = hijo_izquierdo;
+            
+            if (hijo_derecho < heap->tamanho)
+            {
+                hijoX = (heap->elementos[hijo_izquierdo] >= heap->elementos[hijo_derecho]) ?  hijo_izquierdo : hijo_derecho;
+            }
+
+            if (heap->tipo == MAX_HEAP)
+            {
+                if (heap->elementos[padre] < heap->elementos[hijoX])
+                {
+                    swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                }
+            }
+
+            else  // MIN_HEAP
+            {
+                if (heap->elementos[padre] > heap->elementos[hijoX])
+                {
+                    swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                }
+            }
+            
+            padre = hijoX;
+            hijo_izquierdo = HIJO_IZQUIERDO(padre);
+            hijo_derecho = HIJO_DERECHO(padre);
+        }
+    }
+
+    heap->tamanho = tamanho;  // Se restaura el tamaño original del heap
+}
+
+/**
  * @param dato Dato que se desea insertar en el heap.
  * @param heap Heap en el que se quiere insertar el dato.
  * @return true si se insertó correctamente, false en caso contrario.

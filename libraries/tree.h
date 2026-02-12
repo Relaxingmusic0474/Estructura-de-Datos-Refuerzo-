@@ -9,6 +9,7 @@
 
 #define MAX(a, b) (((a) >= (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define ES_PAR(x) ((x & 1) ? (0) : (1))
 #define INDEX_NO_VALIDO (USHRT_MAX)  // El equivalente a (Natural)-1
 #define PADRE(k) (((k)-1) / 2)
 #define HIJO_IZQUIERDO(k) (2u*(k)+1u)
@@ -43,6 +44,7 @@ bool construir_heap(Heap* heap, TipoHeap tipo, ElemType array[], Natural tamanho
 bool redimensionar_heap(Heap* heap, Natural nueva_capacidad);
 Procedure amontonar_heap_secuencial(Heap* heap);
 Procedure amontonar_heap_completo(Heap* heap);
+Procedure heapsort(Heap* heap);
 bool insertar_dato_heap(ElemType dato, Heap* heap);
 Procedure imprimir_heap(Heap heap);
 Procedure eliminar_heap(Heap* heap);
