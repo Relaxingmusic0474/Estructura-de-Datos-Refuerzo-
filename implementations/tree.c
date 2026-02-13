@@ -268,29 +268,92 @@ Procedure amontonar_heap_completo(Heap* heap)
 }
 
 /**
- * @brief Función para amontonar un heap partiendo desde arriba, "eliminando" el nodo raíz, intercambiándolo con el último elemento e ir acomodándolos secuencialmente.
- * @param heap El puntero al heap a amontonar.
+ * @brief Función para eliminar un nodo de un heap.
+ * @param heap El heap en el cual se quiere eliminar un nodo.
+ * @param k El índice del nodo del heap que se quiere eliminar.
  */
-Procedure amontonar_heap_hacia_abajo(Heap* heap)
+Procedure eliminar_k_esimo_nodo_heap(Heap* heap, Index k)
 {
     if (!heap || !heap->elementos)
     {
-        printf("Error: El heap o sus elementos son NULL.  No puede amontonarse.\n");
+        printf("Error: El heap o sus elementos son NULL.  No se puede eliminar ningún nodo\n");
         return;
     }
 
     if (heap->tipo == HEAP_NO_VAL)
     {
-        printf("Error: Tipo de heap no válido.  No puede amontonarse.\n");
+        printf("Error: Tipo de heap no válido.  No se puede realizar la operación de eliminación\n");
         return;
     }
 
-    if (heap->tamanho == 0 || heap->tamanho == 1)
+    if (heap->tamanho == 0)
     {
-        return;  // Heap vacío o con un solo elemento -> No hace nada
+        printf("Error: El heap está vacío.  No hay nada que se pueda eliminar.\n");
+        return;  // Heap vacío
     }
-    
 
+    if (k >= heap->tamanho)
+    {
+        printf("Error: No se puede eliminar el nodo %hu, ya que no existe dentro del heap.\n", k);
+        return;
+    }
+
+    swap(&heap->elementos[k], &heap->elementos[heap->tamanho-1]);
+    heap->elementos[heap->tamanho-1] = 0;
+    heap->tamanho--;
+
+    Index padre = k;
+    Index hijo_izquierdo = HIJO_IZQUIERDO(padre);
+    Index hijo_derecho = HIJO_DERECHO(padre);
+    Index hijoX = hijo_izquierdo;
+
+    while (hijo_izquierdo < heap->tamanho)
+    {
+        if (hijo_derecho < heap->tamanho)
+        {
+            if (heap->tipo == MAX_HEAP)
+            {
+                hijoX = (heap->elementos[hijo_izquierdo] >= heap->elementos[hijo_derecho]) ? hijo_izquierdo : hijo_derecho;
+            }
+
+            else  // MIN_HEAP
+            {
+                hijoX = (heap->elementos[hijo_izquierdo] <= heap->elementos[hijo_derecho]) ? hijo_izquierdo : hijo_derecho;
+            }
+        }
+
+        if (heap->tipo == MAX_HEAP)
+        {
+            if (heap->elementos[padre] < heap->elementos[hijoX])
+            {
+                swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                padre = hijoX;
+                hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                hijo_derecho = HIJO_DERECHO(padre);
+            }
+
+            else
+            {
+                break;
+            }
+        }
+
+        else  // MIN_HEAP
+        {
+            if (heap->elementos[padre] > heap->elementos[hijoX])
+            {
+                swap(&heap->elementos[padre], &heap->elementos[hijoX]);
+                padre = hijoX;
+                hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                hijo_derecho = HIJO_DERECHO(padre);
+            }
+
+            else
+            {
+                break;
+            }
+        }
+    }
 }
 
 /**
@@ -315,8 +378,6 @@ Procedure heapsort(Heap* heap)
     {
         return;  // Heap vacío o con un solo elemento -> No hace nada
     }
-
-    amontonar_heap_completo(heap);
 
     Natural tamanho = heap->tamanho;
 

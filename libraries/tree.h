@@ -4,7 +4,9 @@
 #include "stdio.h"
 #include "types.h"
 #include "stdlib.h"
+#include "string.h"
 #include "stdbool.h"
+#include "math.h"
 #include "limits.h"
 
 #define MAX(a, b) (((a) >= (b)) ? (a) : (b))
@@ -44,6 +46,7 @@ bool construir_heap(Heap* heap, TipoHeap tipo, ElemType array[], Natural tamanho
 bool redimensionar_heap(Heap* heap, Natural nueva_capacidad);
 Procedure amontonar_heap_secuencial(Heap* heap);
 Procedure amontonar_heap_completo(Heap* heap);
+Procedure eliminar_k_esimo_nodo_heap(Heap* heap, Index k);
 Procedure heapsort(Heap* heap);
 bool insertar_dato_heap(ElemType dato, Heap* heap);
 Procedure imprimir_heap(Heap heap);
