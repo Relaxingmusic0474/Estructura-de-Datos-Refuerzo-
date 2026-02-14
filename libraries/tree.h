@@ -19,7 +19,8 @@
 
 typedef enum tipo_heap TipoHeap;
 typedef struct heap Heap;
-typedef ElemType HeapArray[];
+typedef struct ABB ABB;
+typedef ABB AVL;
 
 enum tipo_heap
 {
@@ -36,6 +37,13 @@ struct heap
     TipoHeap tipo;
 };
 
+struct ABB
+{
+    ElemType dato;
+    ABB* subarbol_izquierdo;
+    ABB* subarbol_derecho;
+    Natural altura;
+};
 
 /* ------------------------------------- FUNCIÓN SWAP ------------------------------------- */
 Procedure swap(ElemType* a, ElemType* b);
@@ -53,5 +61,10 @@ bool insertar_dato_heap(ElemType dato, Heap* heap);
 Procedure imprimir_heap(Heap heap);
 Procedure eliminar_heap(Heap* heap);
 Procedure vaciar_heap(Heap* heap);
+
+/* --------------------------------- FUNCIONES PARA ABBs --------------------------------- */
+bool inicializar_abb(ABB* abb);
+bool agregar_dato_al_abb(ABB* abb, ElemType dato);
+
 
 #endif  // TREE_H
