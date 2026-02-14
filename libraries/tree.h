@@ -19,6 +19,7 @@
 
 typedef enum tipo_heap TipoHeap;
 typedef struct heap Heap;
+typedef ElemType HeapArray[];
 
 enum tipo_heap
 {

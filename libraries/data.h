@@ -69,5 +69,6 @@ bool validacion_datos_uniforme(Datos* datos);  // Para validar que los elementos
 Procedure imprimir_datos(Datos datos);  // Imprime los valores de los datos.
 int comparar_metadatos(Dato* dato1, Dato* dato2);  // Para comparar metadatos.
 int comparar_qsort(const void* a, const void* b);  // Para qsort.
+Procedure swap_metadata(Dato* a, Dato* b);
 
 #endif  // DATA_H

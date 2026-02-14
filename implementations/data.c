@@ -390,3 +390,20 @@ int comparar_qsort(const void* a, const void* b)
     Dato* dato2 = (Dato*) b;
     return comparar_metadatos(dato1, dato2);
 }
+
+/**
+ * @brief Intercambia dos metadatos (Dato).
+ * @param a Puntero al primer dato.
+ * @param b Puntero al segundo dato.
+ */
+Procedure swap_metadata(Dato* a, Dato* b)
+{
+    if (!a || !b)
+    {
+        return;
+    }
+
+    Dato temp = *a;
+    *a = *b;
+    *b = temp;
+}

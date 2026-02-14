@@ -158,3 +158,158 @@ Procedure mergesort(Datos* datos, bool ascendente)
     merge(datos, &data1, &data2, ascendente);
     datos->ordenado = true;
 }
+
+/**
+ * @brief Función que aplica el algoritmo de ordenamiento por montones (heapsort) para metadatos.
+ * @param datos Arreglo con los datos (metadatos) a ordenar.
+ * @param ascendente Booleano que indica si se desea ordenar en forma ascendente o descendente el arreglo.
+ */
+Procedure heapsort_data(Datos* datos, bool ascendente)
+{
+    Natural n;
+
+    n = datos->tamanho;
+
+    if (n <= 1)
+    {
+        datos->ordenado = true;
+        return;
+    }
+
+    if (!validacion_datos_uniforme(datos))
+    {
+        printf("ERROR: Los datos ingresados no son uniformes y no habría un criterio claro o entendido para ordenarlos\n");
+        return;
+    }
+
+    Index posicion = (n >> 1) - 1;
+
+    while (true)
+    {
+        Index padre = posicion;
+        bool salir = false;
+        
+        while (!salir)
+        {
+            Index hijo_izquierdo = HIJO_IZQUIERDO(padre);
+            Index hijo_derecho = HIJO_DERECHO(padre);
+            
+            if (hijo_izquierdo >= n)  //  No existe ninguno de los dos hijos
+            {
+                salir = true;
+            }
+
+            else if (hijo_derecho >= n)  // Solo hijo izquierdo existe
+            {
+                if ((ascendente && comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijo_izquierdo]) < 0) ||
+                    (!ascendente && comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijo_izquierdo]) > 0))
+                {
+                    swap_metadata(&datos->arreglo[padre], &datos->arreglo[hijo_izquierdo]);
+                    padre = hijo_izquierdo;
+                }
+                
+                else
+                {
+                    salir = true;
+                }
+            }
+
+            else  // Ambos hijos existen
+            {
+                Index hijo_X;
+                
+                if (ascendente)
+                {
+                    hijo_X = (comparar_metadatos(&datos->arreglo[hijo_izquierdo], &datos->arreglo[hijo_derecho]) >= 0) ? hijo_izquierdo : hijo_derecho;
+                }
+
+                else  // Descendente
+                {
+                    hijo_X = (comparar_metadatos(&datos->arreglo[hijo_izquierdo], &datos->arreglo[hijo_derecho]) <= 0) ? hijo_izquierdo : hijo_derecho;
+                }
+                
+                if ((ascendente && comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijo_X]) < 0) ||
+                    (!ascendente && comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijo_X])))
+                {
+
+                    swap_metadata(&datos->arreglo[padre], &datos->arreglo[hijo_X]);
+                    padre = hijo_X;
+                }
+                    
+                else
+                {
+                    salir = true;
+                }           
+            }
+        }
+
+        if (posicion == 0)
+        {
+            break;
+        }
+
+        posicion--;
+    }
+
+    while (datos->tamanho > 1)
+    {
+        swap_metadata(&datos->arreglo[0], &datos->arreglo[datos->tamanho-1]);
+
+        datos->tamanho--;
+
+        Index hijo_izquierdo = 1, hijo_derecho = 2;
+
+        while (hijo_izquierdo < datos->tamanho)
+        {
+            Index padre = PADRE(hijo_izquierdo);
+            Index hijoX = hijo_izquierdo;
+            
+            if (hijo_derecho < datos->tamanho)
+            {
+                if (ascendente)
+                {
+                    hijoX = (comparar_metadatos(&datos->arreglo[hijo_izquierdo], &datos->arreglo[hijo_derecho]) >= 0) ?  hijo_izquierdo : hijo_derecho;
+                }
+
+                else  // Descendente
+                {
+                    hijoX = (comparar_metadatos(&datos->arreglo[hijo_izquierdo], &datos->arreglo[hijo_derecho]) <= 0) ? hijo_izquierdo : hijo_derecho;
+                }    
+            }
+
+            if (ascendente)
+            {
+                if (comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijoX]) < 0)
+                {
+                    swap_metadata(&datos->arreglo[padre], &datos->arreglo[hijoX]);
+                    padre = hijoX;
+                    hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                    hijo_derecho = HIJO_DERECHO(padre);
+                }
+
+                else
+                {
+                    break;
+                }
+            }
+
+            else  // Descendente
+            {
+                if (comparar_metadatos(&datos->arreglo[padre], &datos->arreglo[hijoX]) > 0)
+                {
+                    swap_metadata(&datos->arreglo[padre], &datos->arreglo[hijoX]);
+                    padre = hijoX;
+                    hijo_izquierdo = HIJO_IZQUIERDO(padre);
+                    hijo_derecho = HIJO_DERECHO(padre);
+                }
+
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    datos->tamanho = n;  // Se restaura el tamaño original de los datos
+}

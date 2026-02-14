@@ -357,6 +357,16 @@ Procedure eliminar_k_esimo_nodo_heap(Heap* heap, Index k)
 }
 
 /**
+ * @brief Función para eliminar la cabeza de un heap.
+ * @param heap El heap al cual se le quiere extraer su cabeza.
+ */
+Procedure eliminar_cabeza_heap(Heap* heap)
+{
+    eliminar_k_esimo_nodo_heap(heap, 0);
+}
+
+
+/**
  * @brief Ordena un heap.
  * @param heap El puntero al heap a ordenar.
  */
