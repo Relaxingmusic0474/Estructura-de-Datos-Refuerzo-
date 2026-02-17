@@ -19,6 +19,7 @@
 
 typedef enum tipo_heap TipoHeap;
 typedef struct heap Heap;
+typedef struct nodoABB NodoABB;
 typedef struct ABB ABB;
 typedef ABB AVL;
 
@@ -37,12 +38,17 @@ struct heap
     TipoHeap tipo;
 };
 
-struct ABB
+struct nodoABB
 {
     ElemType dato;
-    ABB* subarbol_izquierdo;
-    ABB* subarbol_derecho;
+    NodoABB* subarbol_izq;
+    NodoABB* subarbol_der;
     Natural altura;
+};
+
+struct ABB
+{
+    NodoABB* raiz;
 };
 
 /* ------------------------------------- FUNCIÓN SWAP ------------------------------------- */
@@ -63,8 +69,13 @@ Procedure eliminar_heap(Heap* heap);
 Procedure vaciar_heap(Heap* heap);
 
 /* --------------------------------- FUNCIONES PARA ABBs --------------------------------- */
-bool inicializar_abb(ABB* abb);
-bool agregar_dato_al_abb(ABB* abb, ElemType dato);
+Procedure inicializar_abb(ABB* abb);
+bool agregar_dato_al_abb(ElemType dato, ABB* abb);
+NodoABB* buscar_dato_en_abb(ABB* abb, ElemType dato);
+Procedure imprimir_abb(ABB abb);
+Procedure eliminar_dato_abb(ElemType dato, ABB* abb);
+Procedure eliminar_abb(ABB* abb);
+Procedure vaciar_abb(ABB* abb);
 
 
 #endif  // TREE_H

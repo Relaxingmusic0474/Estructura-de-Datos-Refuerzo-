@@ -564,3 +564,169 @@ Procedure vaciar_heap(Heap* heap)
     }
 }
 
+
+/* --------------------------------- FUNCIONES PARA HEAPS --------------------------------- */
+/**
+ * @brief Función para inicializar un ABB (árbol binario de búsqueda).
+ * @param abb El árbol binario de búsqueda a inicializar.
+ */
+Procedure inicializar_abb(ABB* abb)
+{
+    if (!abb)
+    {
+        printf("Error: No se pudo inicializar correctamente el ABB.\n");
+        return;
+    }
+
+    abb->raiz = NULL;
+}
+
+/**
+ * @brief Función para crear un nodo para un ABB para luego insertarlo allí (no se recomienda usarla, sino usar directamente la de insertar).
+ * @param nodo El nodo que se creará.
+ * @param dato El dato que contendrá el nodo que se creará.
+ * @return true si se creó correctamente, false en caso contrario.
+ */
+bool crear_nodo_abb(NodoABB** nodo, ElemType dato)
+{
+    if (!nodo)
+    {
+        printf("Error: No es posible crear el nodo, porque el nodo no existe.\n");
+        return false;
+    }
+
+    if (!(*nodo))
+    {
+        *nodo = (NodoABB *) calloc(1, sizeof(NodoABB));
+
+        if (!(*nodo))
+        {
+            printf("Error: No se pudo crear el nodo debido a un error de asignación de memoria.\n");
+            return false;
+        }
+
+        (*nodo)->dato = dato;
+        (*nodo)->altura = 1;
+
+        return true;
+    }
+
+    if (dato < (*nodo)->dato)
+    {
+        return crear_nodo_abb(&((*nodo)->subarbol_izq), dato);
+    }
+    
+    if (dato > (*nodo)->dato)
+    {
+        return crear_nodo_abb(&((*nodo)->subarbol_der), dato);
+    }
+    
+    return false;
+}
+
+/**
+ * @brief Función para agregar un dato a un ABB. 
+ * @param dato El dato que se agregará.
+ * @param abb El ABB al cual se agregará el dato.
+ * @return true si se agregó correctamente, false en caso contrario.
+ */
+bool agregar_dato_al_abb(ElemType dato, ABB* abb)
+{
+    if (!abb)
+    {
+        printf("Error: No es posible agregar ningún dato al ABB, porque la referencia del ABB es NULL.\n");
+        return false;
+    }
+
+    return crear_nodo_abb(&(abb->raiz), dato);
+}
+
+/**
+ * @brief Función para buscar un dato en un ABB.
+ * @param abb El ABB en el cual se desea buscar el dato.
+ * @param dato El dato (valor) que se quiere buscar.
+ * @return El nodo en que se encuentra el dato.  Si no lo encuentra, devuelve NULL.
+ */
+NodoABB* buscar_dato_en_abb(ABB* abb, ElemType dato)
+{
+    NodoABB* actual = abb->raiz;
+
+    while (actual != NULL)
+    {
+        if (dato < actual->dato)
+        {
+            actual = actual->subarbol_izq;
+        }
+
+        else if (dato == actual->dato)
+        {
+            return actual;
+        }
+
+        else
+        {
+            actual = actual->subarbol_der;
+        }
+    }
+
+    return NULL;
+}
+
+Procedure imprimir_abb(ABB abb)
+{
+    
+
+
+}
+
+Procedure eliminar_dato_abb(ElemType dato, ABB* abb)
+{
+    NodoABB* nodo_a_eliminar = buscar_dato_en_abb(abb, dato);
+
+    if (!nodo_a_eliminar)
+    {
+        printf("Advertencia: El dato que se quería eliminar no existe, por lo que no se podrá eliminar.\n");
+        return;
+    }
+
+    // Caso nodo hoja
+    if (nodo_a_eliminar->subarbol_izq == NULL && nodo_a_eliminar->subarbol_der == NULL)
+    {
+        free(nodo_a_eliminar);
+        nodo_a_eliminar = NULL;
+    }
+
+    // Caso hijo izquierdo (predecesor inorden)
+    else if (nodo_a_eliminar->subarbol_izq != NULL && nodo_a_eliminar->subarbol_der == NULL)
+    {
+        NodoABB* actual = nodo_a_eliminar->subarbol_izq;
+
+        while (actual->subarbol_der != NULL)
+        {
+            actual = actual->subarbol_der;  // Nos movemos hacia la derecha dentro del subárbol izquierdo para encontrar el predecesor
+        }
+
+        
+
+
+    }
+
+    // Caso hijo derecho o ambos hijos (sucesor inorden)
+    else
+    {
+
+    }
+
+
+
+}
+
+Procedure eliminar_abb(ABB* abb)
+{
+
+}
+
+Procedure vaciar_abb(ABB* abb)
+{
+
+}
