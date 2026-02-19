@@ -79,8 +79,8 @@ Procedure imprimir_abb(ABB abb);
 NodoABB* sucesor_inorden(NodoABB* nodo);
 NodoABB* predecesor_inorden(NodoABB* nodo);
 Procedure eliminar_dato_abb(ElemType dato, ABB* abb);
-Procedure eliminar_abb(ABB* abb);
 Procedure vaciar_abb(ABB* abb);
+Procedure eliminar_abb(ABB* abb);
 
 
 #endif  // TREE_H

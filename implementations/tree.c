@@ -973,14 +973,26 @@ Procedure eliminar_dato_abb(ElemType dato, ABB* abb)
     }
 }
 
-Procedure eliminar_abb(ABB* abb)
+static void vaciar_subabb(NodoABB* raiz)
 {
+    if (!raiz)
+    {
+        return;
+    }
 
+    vaciar_subabb(raiz->subarbol_izq);
+    vaciar_subabb(raiz->subarbol_der);
 
+    free(raiz);
 }
 
 Procedure vaciar_abb(ABB* abb)
 {
+    if (!abb)
+    {
+        return;
+    }
 
-
+    vaciar_subabb(abb->raiz);
+    abb->raiz = NULL;
 }
