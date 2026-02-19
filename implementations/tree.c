@@ -565,7 +565,7 @@ Procedure vaciar_heap(Heap* heap)
 }
 
 
-/* --------------------------------- FUNCIONES PARA HEAPS --------------------------------- */
+/* --------------------------------- FUNCIONES PARA ABBs --------------------------------- */
 /**
  * @brief Función para inicializar un ABB (árbol binario de búsqueda).
  * @param abb El árbol binario de búsqueda a inicializar.
@@ -672,6 +672,11 @@ NodoABB* buscar_dato_en_abb(ABB* abb, ElemType dato)
     return NULL;
 }
 
+/**
+ * @brief Función que imprime el recorrido preorden del ABB, que consiste en recorrer primero la raíz, y luego los subárboles izquierdo y derecho respectivamente.
+ * @param abb El ABB que se quiere recorrer.
+ * @param raiz La raíz del ABB (se debe especificar explícitamente aunque forme parte de la estructura).
+ */
 Procedure preorden(ABB abb, NodoABB* raiz)
 {
     if (!(&abb))
@@ -698,6 +703,11 @@ Procedure preorden(ABB abb, NodoABB* raiz)
     }
 }
 
+/**
+ * @brief Función que imprime el recorrido inorden del ABB, que consiste en recorrer primero el subárbol izquierdo, luego la raíz, y finalmente el subárbol derecho.
+ * @param abb El ABB que se quiere recorrer.
+ * @param raiz La raíz del ABB (se debe especificar explícitamente aunque forme parte de la estructura).
+ */
 Procedure inorden(ABB abb, NodoABB* raiz)
 {
     if (!(&abb))
@@ -724,6 +734,11 @@ Procedure inorden(ABB abb, NodoABB* raiz)
     }
 }
 
+/**
+ * @brief Función que imprime el recorrido postorden del ABB, que consiste en recorrer primero los subárboles izquierdo y derecho, y luego la raíz.
+ * @param abb El ABB que se quiere recorrer.
+ * @param raiz La raíz del ABB (se debe especificar explícitamente aunque forme parte de la estructura).
+ */
 Procedure postorden(ABB abb, NodoABB* raiz)
 {
     if (!(&abb))
@@ -750,6 +765,7 @@ Procedure postorden(ABB abb, NodoABB* raiz)
     printf("%d - ", raiz->dato);
 }
 
+
 Procedure imprimir_abb(ABB abb)
 {
     
@@ -758,10 +774,79 @@ Procedure imprimir_abb(ABB abb)
 }
 
 /**
+ * @brief Función que devuelve el nodo que contiene el mínimo valor de un subárbol.
+ * @param raiz El puntero al nodo raíz del árbol que se quiere analizar.
+ * @return El puntero al nodo que contiene el valor mínimo del subárbol.  Si se quiere acceder al valor, se debe hacer minimo_subabb(raiz)->dato;
+ */
+NodoABB* minimo_subabb(NodoABB* raiz)
+{
+    if (!raiz)
+    {
+        return NULL;
+    }
+
+    if (!raiz->subarbol_izq)
+    {
+        return raiz;
+    }
+
+    return minimo_subabb(raiz->subarbol_izq);
+}
+
+/**
+ * @brief Función que devuelve el nodo que contiene el máximo valor de un subárbol.
+ * @param raiz El puntero al nodo raíz del árbol que se quiere analizar.
+ * @return El puntero al nodo que contiene el valor máximo del subárbol.  Si se quiere acceder al valor, se debe hacer maximo_subabb(raiz)->dato;
+ */
+NodoABB* maximo_subabb(NodoABB* raiz)
+{
+    if (!raiz)
+    {
+        return NULL;
+    }
+
+    if (!raiz->subarbol_der)
+    {
+        return raiz;
+    }
+
+    return maximo_subabb(raiz->subarbol_der);
+}
+
+/**
+ * @brief Función que devuelve el nodo que contiene el sucesor inorden de un determinado nodo.
+ * @param nodo El nodo en cuestión.
+ * @return El puntero al nodo que contiene el sucesor inorden al valor del nodo.
+ */
+NodoABB* sucesor_inorden(NodoABB* nodo)
+{
+    if (!nodo)
+    {
+        return NULL;
+    }
+
+    return minimo_subabb(nodo->subarbol_der);
+}
+
+/**
+ * @brief Función que devuelve el nodo que contiene el predecesor inorden de un determinado nodo.
+ * @param nodo El nodo en cuestión.
+ * @return El puntero al nodo que contiene el predecesor inorden al valor del nodo.
+ */
+NodoABB* predecesor_inorden(NodoABB* nodo)
+{
+    if (!nodo)
+    {
+        return NULL;
+    }
+
+    return maximo_subabb(nodo->subarbol_izq);
+}
+
+/**
  * @brief Función para eliminar un dato de un ABB a partir de su raíz.
  * @param dato El dato a eliminar.
  * @param raiz La raíz del ABB en el que supuestamente está el dato que se quiere eliminar.
- * 
  */
 Procedure eliminar_dato_abb_desde_raiz(ElemType dato, NodoABB* raiz)
 {
@@ -808,10 +893,11 @@ Procedure eliminar_dato_abb_desde_raiz(ElemType dato, NodoABB* raiz)
         raiz = NULL;
     }
 
-    
+    else
+    {
 
 
-
+    }
 }
 
 /**
