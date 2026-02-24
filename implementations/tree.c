@@ -649,6 +649,12 @@ bool agregar_dato_al_abb(ElemType dato, ABB* abb)
  */
 NodoABB* buscar_dato_en_abb(ABB* abb, ElemType dato)
 {
+    if (!abb)
+    {
+        printf("Error: El ABB no existe, por lo que no se puede buscar el dato deseado.\n");
+        return NULL;
+    }
+
     NodoABB* actual = abb->raiz;
 
     while (actual != NULL)
@@ -844,135 +850,102 @@ NodoABB* predecesor_inorden(NodoABB* nodo)
 }
 
 /**
- * @brief Función para eliminar un dato de un ABB a partir de su raíz.
+ * @brief Función para eliminar un dato de un sub-ABB a partir de su raíz.
+ * @param raiz La raíz del sub-ABB en el que supuestamente está el dato que se quiere eliminar.
  * @param dato El dato a eliminar.
- * @param raiz La raíz del ABB en el que supuestamente está el dato que se quiere eliminar.
+ * @param eliminado Puntero que indica si el dato fue eliminado o no.
+ * @return La nueva raíz del subárbol en que se eliminó el dato.
  */
-Procedure eliminar_dato_abb_desde_raiz(ElemType dato, NodoABB* raiz)
+static NodoABB* eliminar_dato_subabb(NodoABB* raiz, ElemType dato, bool* eliminado)
 {
+    
     if (!raiz)
     {
-        printf("Error: No es posible eliminar el dato, porque el sub ABB está vacío.\n");
-        return;
+        return NULL;
     }
-
-    NodoABB* raiz_subarbol;
 
     if (dato < raiz->dato)
     {
-        return eliminar_dato_abb_desde_raiz(dato, raiz->subarbol_izq);
+        raiz->subarbol_izq = eliminar_dato_subabb(raiz->subarbol_izq, dato, eliminado);
     }
 
-    if (dato > raiz->dato)
+    else if (dato > raiz->dato)
     {
-        return eliminar_dato_abb_desde_raiz(dato, raiz->subarbol_der);
+        raiz->subarbol_der = eliminar_dato_subabb(raiz->subarbol_der, dato, eliminado);
     }
 
-    if (!raiz->subarbol_izq && !raiz->subarbol_der)
+    else  // dato == raiz->dato
     {
-        raiz->dato = 0;
-        free(raiz);
-        raiz = NULL;
-    }
-
-    else if ((raiz->subarbol_izq && !raiz->subarbol_der) || (!raiz->subarbol_izq && raiz->subarbol_der))
-    {
-        if (raiz->subarbol_izq)
+        if (eliminado)
         {
-            raiz_subarbol = raiz->subarbol_izq;
-            raiz->subarbol_izq = NULL;    
+            *eliminado = true;
         }
 
-        else  // raiz->subarbol_der
+        // Caso 1: 0 hijos
+        if (!raiz->subarbol_izq && !raiz->subarbol_der)
         {
-            raiz_subarbol = raiz->subarbol_der;
-            raiz->subarbol_der = NULL;
+            free(raiz);
+            return NULL;
         }
 
-        free(raiz);
-        raiz = NULL;
+        // Caso 2: Existe solo hijo derecho
+        if (!raiz->subarbol_izq)
+        {
+            NodoABB* temp = raiz->subarbol_der;
+            free(raiz);
+            return temp;
+        }
+
+        // Caso 3: Existe solo hijo izquierdo
+        if (!raiz->subarbol_der)
+        {
+            NodoABB* temp = raiz->subarbol_izq;
+            free(raiz);
+            return temp;
+        }
+
+        // Caso 4: 2 hijos -> Sucesor inorden (mínimo del derecho)
+        NodoABB* sucesor = sucesor_inorden(raiz);
+
+        // Se actualiza la info importante del nodo raíz con la info del sucesor inorden
+        raiz->dato = sucesor->dato;
+
+        // Se elimina el sucesor (ahora duplicado en el subárbol derecho)
+        raiz->subarbol_der = eliminar_dato_subabb(raiz->subarbol_der, sucesor->dato, eliminado);
     }
 
-    else
-    {
+    /* Si mantienes altura en ABB, al menos recalculala para que quede consistente */
+    // actualizar_altura(raiz);
 
-
-    }
+    return raiz;
+    
 }
 
 /**
- * @brief Función para eliminar un dato (valor) de un ABB.
- * @param dato El dato que se quiere eliminar.
- * @param abb El ABB en el cual se quiere encontrar y eliminar ese dato.
+ * @brief Función que elimina un dato de un ABB.
+ * @param abb El ABB en que se supone está el dato que se quiere eliminar.
+ * @param dato El dato (valor) que se quiere eliminar del ABB.
+ * @return true si se logró eliminar correctamente, false en caso contrario.
  */
-Procedure eliminar_dato_abb(ElemType dato, ABB* abb)
+bool eliminar_dato_abb(ABB* abb, ElemType dato)
 {
-    NodoABB* raiz;
-
     if (!abb)
     {
-        printf("Error: No es posible eliminar el dato, porque el ABB no existe.\n");
-        return;
+        printf("Error: El ABB no existe, por lo que no se podrá eliminar el dato deseado.\n");
+        return false;
     }
 
-    raiz = abb->raiz;
+    bool eliminado = false;
+    abb->raiz = eliminar_dato_subabb(abb->raiz, dato, &eliminado);
 
-    if (!raiz)
-    {
-        printf("Error: No es posible eliminar el dato, porque el ABB está vacío.\n");
-        return;
-    }
-
-    if (dato < raiz->dato)
-    {
-        return eliminar_dato_abb_desde_raiz(dato, raiz->subarbol_izq);
-    }
-
-    if (dato > raiz->dato)
-    {
-        return eliminar_dato_abb_desde_raiz(dato, raiz->subarbol_der);
-    }
-
-    if (!raiz->subarbol_izq && !raiz->subarbol_der)
-    {
-        raiz->dato = 0;
-        free(raiz);
-        raiz = NULL;
-    }
-
-    else if ((raiz->subarbol_izq && !raiz->subarbol_der) || (!raiz->subarbol_izq && raiz->subarbol_der))
-    {
-        if (raiz->subarbol_izq)
-        {
-            abb->raiz = raiz->subarbol_izq;
-            raiz->subarbol_izq = NULL;    
-        }
-
-        else  // raiz->subarbol_der
-        {
-            abb->raiz = raiz->subarbol_der;
-            raiz->subarbol_der = NULL;
-        }
-
-        free(raiz);
-        raiz = NULL;
-    }
-
-    else  // raiz->subarbol_izq && raiz->subarbol_der -> Sucesor inorden
-    {
-        NodoABB* sucesor = raiz->subarbol_der;
-
-        while (sucesor->subarbol_izq)
-        {
-            sucesor = sucesor->subarbol_izq;  // Nos movemos hacia la izquierda dentro del subárbol derecho para encontrar el sucesor
-        }
-
-        raiz->dato = sucesor->dato;
-        
-        eliminar_dato_abb_desde_raiz(sucesor->dato, sucesor);
-    }
+    return eliminado;
+    
 }
 
+/**
+ * @brief Función para vaciar un sub-ABB.
+ * @param raiz La raíz del sub-ABB que se quiere vaciar.
+ */
 static void vaciar_subabb(NodoABB* raiz)
 {
     if (!raiz)
@@ -986,13 +959,67 @@ static void vaciar_subabb(NodoABB* raiz)
     free(raiz);
 }
 
-Procedure vaciar_abb(ABB* abb)
+/**
+ * @brief Función para vaciar un ABB.
+ * @param abb La referencia al ABB que se quiere vaciar.
+ */
+Procedure( vaciar_abb(ABB* abb)
 {
     if (!abb)
     {
+        printf("Error: El ABB es NULL, por lo que no se podrá vaciar.\n");
         return;
     }
 
     vaciar_subabb(abb->raiz);
     abb->raiz = NULL;
 }
+
+/**
+ * @brief Para saber si un ABB está vacío o no.
+ * @param abb El ABB a analizar.
+ * @return true si la raíz del ABB es NULL (ABB vacío), false en caso contrario (ABB no vacío).
+ */
+bool es_abb_vacio(ABB abb)
+{
+    return abb.raiz == NULL;
+}
+
+/**
+ * @brief Construye el MAXHEAP a partir del ABB.
+ * @param abb El ABB del cual se quiere construir el MAXHEAP.
+ * @return El MAXHEAP correspondiente.
+ */
+Heap obtener_maxheap(ABB* abb)
+{
+    Heap heap = {0};
+
+    if (!abb)
+    {
+        printf("Advertencia: ABB no existe. El heap que se creó quedó vacío.\n");
+        return heap;
+    }
+    
+    if (es_abb_vacio(*abb))
+    {
+        printf("Advertencia: ABB vacío. El heap que se creó quedó vacío.\n");
+        return heap;
+    }
+
+    ABB copia_abb = *abb;
+
+    crear_heap(&heap, MAX_HEAP, 10);
+
+    NodoABB* actual = abb->raiz;
+
+    while (actual->subarbol_der)
+    {
+        ElemType mayor = maximo_subabb(actual->subarbol_der);
+
+
+    }
+
+}
+
+
+/* --------------------------------- FUNCIONES PARA AVLs --------------------------------- */

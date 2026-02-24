@@ -78,7 +78,7 @@ Procedure postorden(ABB abb, NodoABB* raiz);
 Procedure imprimir_abb(ABB abb);
 NodoABB* sucesor_inorden(NodoABB* nodo);
 NodoABB* predecesor_inorden(NodoABB* nodo);
-Procedure eliminar_dato_abb(ElemType dato, ABB* abb);
+bool eliminar_dato_abb(ABB* abb, ElemType dato);
 Procedure vaciar_abb(ABB* abb);
 Procedure eliminar_abb(ABB* abb);
 
